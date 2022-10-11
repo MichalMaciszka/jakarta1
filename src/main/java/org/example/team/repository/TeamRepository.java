@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import org.example.team.entity.Team;
 import org.example.datastore.DataStore;
+import org.example.team.entity.Team;
 
 @Dependent
 public class TeamRepository {
@@ -16,15 +16,15 @@ public class TeamRepository {
         this.dataStore = dataStore;
     }
 
-    public Optional<Team> findTeam(String name) {
-        return dataStore.findTeamByName(name);
+    public void createTeam(Team team) {
+        dataStore.createTeam(team);
     }
 
     public List<Team> findAllTeams() {
         return dataStore.findAllTeams();
     }
 
-    public void createTeam(Team team) {
-        dataStore.createTeam(team);
+    public Optional<Team> findTeam(String name) {
+        return dataStore.findTeamByName(name);
     }
 }

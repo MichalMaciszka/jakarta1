@@ -5,10 +5,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import org.example.driver.entity.Driver;
 import org.example.driver.service.DriverService;
 import org.example.team.entity.Team;
 import org.example.team.service.TeamService;
-import org.example.driver.entity.Driver;
 import org.example.user.entity.User;
 import org.example.user.entity.UserRole;
 import org.example.user.service.UserService;
@@ -33,28 +33,24 @@ public class DataInitializer {
 
     private synchronized void initialize() {
         User first = User.builder()
-//                .drivers(Collections.emptyList())
                 .birthDate(LocalDate.now())
                 .login("first")
                 .password("pass")
                 .role(UserRole.ADMIN)
                 .build();
         User second = User.builder()
-//                .drivers(Collections.emptyList())
                 .birthDate(LocalDate.now())
                 .login("second")
                 .password("pass2")
                 .role(UserRole.USER)
                 .build();
         User third = User.builder()
-//                .drivers(Collections.emptyList())
                 .birthDate(LocalDate.now())
                 .login("third")
                 .password("pass3")
                 .role(UserRole.USER)
                 .build();
         User fourth = User.builder()
-//                .drivers(Collections.emptyList())
                 .birthDate(LocalDate.now())
                 .login("fourth")
                 .password("pass4")

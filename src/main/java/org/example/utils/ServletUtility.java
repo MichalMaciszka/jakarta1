@@ -7,8 +7,7 @@ public class ServletUtility {
         String path = request.getPathInfo();
         if (path == null) {
             return "";
-        }
-        else if(path.endsWith("/")) {
+        } else if (path.endsWith("/")) {
             return path.substring(0, path.length() - 1);
         }
 

@@ -1,11 +1,9 @@
 package org.example.driver.dto;
 
-import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.driver.entity.Driver;
 
 @Data
 @AllArgsConstructor

@@ -17,14 +17,6 @@ public class DriverRepository {
         this.dataStore = dataStore;
     }
 
-    public Optional<Driver> findDriverByNameAndSurname(String name, String surname) {
-        return dataStore.findDriverByNameAndSurname(name, surname);
-    }
-
-    public List<Driver> findAllDrivers() {
-        return dataStore.findAllDrivers();
-    }
-
     public void createDriver(Driver driver) {
         dataStore.createDriver(driver);
     }
@@ -33,19 +25,23 @@ public class DriverRepository {
         dataStore.deleteDriver(driver.getStartingNumber());
     }
 
-    public void update(Driver driver) {
-        dataStore.updateDriver(driver);
+    public List<Driver> findAllDrivers() {
+        return dataStore.findAllDrivers();
+    }
+
+    public Optional<Driver> findDriverByNameAndSurname(String name, String surname) {
+        return dataStore.findDriverByNameAndSurname(name, surname);
     }
 
     public Optional<Driver> findDriverByStartingNumber(Integer number) {
         return dataStore.findDriverByNumber(number);
     }
 
-    public List<Driver> findDriversByUser(String login) {
+    public Optional<Driver> findDriverByTeamAndNumber(String teamName, Integer number) {
         return dataStore.findAllDrivers()
                 .stream()
-                .filter(x -> x.getUser().getLogin().equals(login))
-                .collect(Collectors.toList());
+                .filter(x -> x.getTeam().getTeamName().equals(teamName) && x.getStartingNumber().equals(number))
+                .findFirst();
     }
 
     public Optional<Driver> findDriverByUserAndNumber(String login, Integer number) {
@@ -62,10 +58,14 @@ public class DriverRepository {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Driver> findDriverByTeamAndNumber(String teamName, Integer number) {
+    public List<Driver> findDriversByUser(String login) {
         return dataStore.findAllDrivers()
                 .stream()
-                .filter(x -> x.getTeam().getTeamName().equals(teamName) && x.getStartingNumber().equals(number))
-                .findFirst();
+                .filter(x -> x.getUser().getLogin().equals(login))
+                .collect(Collectors.toList());
+    }
+
+    public void update(Driver driver) {
+        dataStore.updateDriver(driver);
     }
 }

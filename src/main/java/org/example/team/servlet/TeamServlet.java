@@ -43,12 +43,37 @@ public class TeamServlet extends HttpServlet {
     }
 
     @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String parsedPath = ServletUtility.parseRequestPath(req);
+        String[] path = parsedPath.split("/");
+        long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
+        String teamName = path[1].replace('_', ' ');
+        if (slashesCounter != 3) {
+            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return;
+        }
+        if (!path[2].equals("drivers")) {
+            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return;
+        }
+
+        //delete given driver
+        Optional<Driver> driver = driverService.findDriverByTeamAndNumber(
+                teamName,
+                Integer.parseInt(path[3])
+        );
+
+        driver.ifPresent(driverService::deleteDriver);
+        resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType(MimeTypes.APPLICATION_JSON);
         String parsedPath = ServletUtility.parseRequestPath(req);
         long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
 
-        if(slashesCounter == 0) {
+        if (slashesCounter == 0) {
             //return all teams
             List<GetTeamResponse> teams = teamService.findAllTeams()
                     .stream()
@@ -56,12 +81,11 @@ public class TeamServlet extends HttpServlet {
                     .collect(Collectors.toList());
             resp.getWriter().write(jsonb.toJson(teams));
             return;
-        }
-        else if (slashesCounter == 1) {
+        } else if (slashesCounter == 1) {
             //return specific team
             String teamName = parsedPath.split("/")[1].replace('_', ' ');
             Optional<Team> team = teamService.findTeam(teamName);
-            if(team.isEmpty()) {
+            if (team.isEmpty()) {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
@@ -69,8 +93,7 @@ public class TeamServlet extends HttpServlet {
                     GetTeamResponse.entityToDtoMapper().apply(team.get())
             ));
             return;
-        }
-        else if (slashesCounter == 2) {
+        } else if (slashesCounter == 2) {
             //check if path[2] == "drivers", return all drivers from team
             String[] path = parsedPath.split("/");
             String teamName = path[1].replace('_', ' ');
@@ -84,8 +107,7 @@ public class TeamServlet extends HttpServlet {
                     .collect(Collectors.toList());
             resp.getWriter().write(jsonb.toJson(drivers));
             return;
-        }
-        else if(slashesCounter == 3) {
+        } else if (slashesCounter == 3) {
             //check if path[2] == "drivers", return driver with specific number
             String[] path = parsedPath.split("/");
             String teamName = path[1].replace('_', ' ');
@@ -96,7 +118,7 @@ public class TeamServlet extends HttpServlet {
             }
 
             Optional<Driver> driver = driverService.findDriverByTeamAndNumber(teamName, number);
-            if(driver.isEmpty()) {
+            if (driver.isEmpty()) {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
@@ -113,7 +135,7 @@ public class TeamServlet extends HttpServlet {
         String parsedPath = ServletUtility.parseRequestPath(req);
         long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
 
-        if(slashesCounter == 0) {
+        if (slashesCounter == 0) {
             //add team logic
             CreateTeamRequest requestBody = jsonb.fromJson(
                     req.getInputStream(),
@@ -135,12 +157,11 @@ public class TeamServlet extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_CONFLICT);
                 return;
             }
-        }
-        else if(slashesCounter == 2) {
+        } else if (slashesCounter == 2) {
             //check if path[2] == "drivers", add driver to specific team
             String[] path = parsedPath.split("/");
             String teamName = path[1].replace('_', ' ');
-            if(!path[2].equals("drivers")) {
+            if (!path[2].equals("drivers")) {
                 resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
                 return;
             }
@@ -204,7 +225,7 @@ public class TeamServlet extends HttpServlet {
                 teamName,
                 Integer.parseInt(path[3])
         );
-        if(opt.isEmpty()) {
+        if (opt.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -220,30 +241,5 @@ public class TeamServlet extends HttpServlet {
         } catch (IllegalArgumentException ex) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String parsedPath = ServletUtility.parseRequestPath(req);
-        String[] path = parsedPath.split("/");
-        long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
-        String teamName = path[1].replace('_', ' ');
-        if(slashesCounter != 3) {
-            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-            return;
-        }
-        if (!path[2].equals("drivers")) {
-            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-            return;
-        }
-
-        //delete given driver
-        Optional<Driver> driver = driverService.findDriverByTeamAndNumber(
-                teamName,
-                Integer.parseInt(path[3])
-        );
-
-        driver.ifPresent(driverService::deleteDriver);
-        resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 }

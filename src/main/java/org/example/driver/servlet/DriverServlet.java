@@ -37,79 +37,10 @@ public class DriverServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType(MimeTypes.APPLICATION_JSON);
-
-        String parsedPath = ServletUtility.parseRequestPath(req);
-        System.out.println(parsedPath);
-        long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
-
-        if(slashesCounter == 0) {
-            //return all drivers
-            List<GetDriverResponse> drivers = driverService.findAllDrivers()
-                    .stream()
-                    .map(item -> GetDriverResponse.entityToDtoMapper().apply(item))
-                    .collect(Collectors.toList());
-            resp.getWriter().write(jsonb.toJson(drivers));
-            return;
-        }
-        if (slashesCounter == 1) {
-            //return specific driver
-            Integer number = Integer.parseInt(
-                    parsedPath.split("/")[1]
-            );
-            Optional<Driver> driver = driverService.findDriver(number);
-            if(driver.isEmpty()) {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-            resp.getWriter().write(jsonb.toJson(
-                    GetDriverResponse.entityToDtoMapper().apply(driver.get())
-            ));
-            return;
-        }
-        resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String parsedPath = ServletUtility.parseRequestPath(req);
-        System.out.println(parsedPath);
-        long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
-        if(slashesCounter != 0) {
-            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-            return;
-        }
-        try {
-            CreateDriverRequest bodyRequest = jsonb.fromJson(
-                    req.getInputStream(),
-                    CreateDriverRequest.class
-            );
-
-            Driver driver = driverMapper.createDriverMapping(bodyRequest);
-            driverService.createDriver(driver);
-            resp.addHeader(HttpHeaders.LOCATION,
-                    UrlFactory.createUrl(
-                            req,
-                            "/api/drivers",
-                            bodyRequest.getStartingNumber().toString()
-                    )
-            );
-            resp.setStatus(HttpServletResponse.SC_CREATED);
-        } catch (NotFoundException nfe) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-        } catch (IllegalStateException ise) {
-            resp.sendError(HttpServletResponse.SC_CONFLICT);
-        } catch (IllegalArgumentException iae) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        }
-    }
-
-    @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String parsedPath = ServletUtility.parseRequestPath(req);
         long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
-        if(slashesCounter != 1) {
+        if (slashesCounter != 1) {
             resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
         }
@@ -128,6 +59,75 @@ public class DriverServlet extends HttpServlet {
     }
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType(MimeTypes.APPLICATION_JSON);
+
+        String parsedPath = ServletUtility.parseRequestPath(req);
+        System.out.println(parsedPath);
+        long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
+
+        if (slashesCounter == 0) {
+            //return all drivers
+            List<GetDriverResponse> drivers = driverService.findAllDrivers()
+                    .stream()
+                    .map(item -> GetDriverResponse.entityToDtoMapper().apply(item))
+                    .collect(Collectors.toList());
+            resp.getWriter().write(jsonb.toJson(drivers));
+            return;
+        }
+        if (slashesCounter == 1) {
+            //return specific driver
+            Integer number = Integer.parseInt(
+                    parsedPath.split("/")[1]
+            );
+            Optional<Driver> driver = driverService.findDriver(number);
+            if (driver.isEmpty()) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            resp.getWriter().write(jsonb.toJson(
+                    GetDriverResponse.entityToDtoMapper().apply(driver.get())
+            ));
+            return;
+        }
+        resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String parsedPath = ServletUtility.parseRequestPath(req);
+        System.out.println(parsedPath);
+        long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
+        if (slashesCounter != 0) {
+            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return;
+        }
+        try {
+            CreateDriverRequest bodyRequest = jsonb.fromJson(
+                    req.getInputStream(),
+                    CreateDriverRequest.class
+            );
+
+            Driver driver = driverMapper.createDriverMapping(bodyRequest);
+            driverService.createDriver(driver);
+            resp.addHeader(HttpHeaders.LOCATION,
+                    UrlFactory.createUrl(
+                            req,
+                            "/api/drivers",
+                            bodyRequest.getStartingNumber()
+                    )
+            );
+            resp.setStatus(HttpServletResponse.SC_CREATED);
+        } catch (NotFoundException nfe) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        } catch (IllegalStateException ise) {
+            resp.sendError(HttpServletResponse.SC_CONFLICT);
+        } catch (IllegalArgumentException iae) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
+    @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UpdateDriverRequest requestBody = jsonb.fromJson(
                 req.getInputStream(),
@@ -137,7 +137,7 @@ public class DriverServlet extends HttpServlet {
         String parsedPath = ServletUtility.parseRequestPath(req);
         long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
 
-        if(slashesCounter != 1) {
+        if (slashesCounter != 1) {
             resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
         }
@@ -145,7 +145,7 @@ public class DriverServlet extends HttpServlet {
         Integer number = Integer.parseInt(parsedPath.split("/")[1]);
         Optional<Driver> opt = driverService.findDriver(number);
 
-        if(opt.isEmpty()) {
+        if (opt.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }

@@ -10,15 +10,15 @@ import javax.enterprise.context.ApplicationScoped;
 import lombok.extern.java.Log;
 import org.example.driver.entity.Driver;
 import org.example.team.entity.Team;
-import org.example.utils.CloningUtility;
 import org.example.user.entity.User;
+import org.example.utils.CloningUtility;
 
 @Log
 @ApplicationScoped
 public class DataStore {
-    private Set<Team> teams = new HashSet<>();
-    private Set<Driver> drivers = new HashSet<>();
-    private Set<User> users = new HashSet<>();
+    private final Set<Team> teams = new HashSet<>();
+    private final Set<Driver> drivers = new HashSet<>();
+    private final Set<User> users = new HashSet<>();
 
     public synchronized void createDriver(Driver driver) {
         if (findDriverByNumber(driver.getStartingNumber()).isPresent()) {
@@ -80,6 +80,13 @@ public class DataStore {
                 .map(CloningUtility::clone);
     }
 
+    public synchronized Optional<Driver> findDriverByNumber(Integer number) {
+        return drivers.stream()
+                .filter(x -> x.getStartingNumber().equals(number))
+                .findFirst()
+                .map(CloningUtility::clone);
+    }
+
     public synchronized Optional<Team> findTeamByName(String name) {
         return teams.stream()
                 .filter(x -> x.getTeamName().equals(name))
@@ -104,12 +111,5 @@ public class DataStore {
 
         drivers.remove(fromCollection.get());
         drivers.add(driver);
-    }
-
-    public synchronized Optional<Driver> findDriverByNumber(Integer number) {
-        return drivers.stream()
-                .filter(x -> x.getStartingNumber().equals(number))
-                .findFirst()
-                .map(CloningUtility::clone);
     }
 }

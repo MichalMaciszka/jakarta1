@@ -3,7 +3,6 @@ package org.example.driver.mapper;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.xml.registry.InvalidRequestException;
 import lombok.NoArgsConstructor;
 import org.example.driver.dto.CreateDriverForTeamRequest;
 import org.example.driver.dto.CreateDriverForUserRequest;
@@ -30,18 +29,44 @@ public class DriverMapper {
         this.driverService = driverService;
     }
 
+    public Driver createDriverForTeamMapper(CreateDriverForTeamRequest request, String teamName) throws NotFoundException {
+        Optional<Team> team = teamService.findTeam(teamName);
+        if (team.isEmpty()) {
+            throw new NotFoundException("Team not found");
+        }
+
+        Optional<User> user = userService.findByLogin(request.getUserLogin());
+        if (user.isEmpty()) {
+            throw new NotFoundException("User not found");
+        }
+
+        if (driverService.findDriver(Integer.parseInt(request.getStartingNumber())).isPresent()) {
+            throw new IllegalStateException("Driver already exists");
+        }
+
+        return Driver.builder()
+                .startingNumber(Integer.parseInt(request.getStartingNumber()))
+                .name(request.getName())
+                .surname(request.getSurname())
+                .nationality(request.getNationality())
+                .racesWon(Integer.parseInt(request.getRacesWon()))
+                .team(team.get())
+                .user(user.get())
+                .build();
+    }
+
     public Driver createDriverForUserMapping(CreateDriverForUserRequest request, String login) throws NotFoundException {
         Optional<User> user = userService.findByLogin(login);
-        if(user.isEmpty()) {
+        if (user.isEmpty()) {
             throw new NotFoundException("User not found");
         }
 
         Optional<Team> team = teamService.findTeam(request.getTeamName());
-        if(team.isEmpty()) {
+        if (team.isEmpty()) {
             throw new NotFoundException("Team not found");
         }
 
-        if(driverService.findDriver(request.getStartingNumber()).isPresent()) {
+        if (driverService.findDriver(request.getStartingNumber()).isPresent()) {
             throw new IllegalStateException("Driver already exists");
         }
 
@@ -58,42 +83,16 @@ public class DriverMapper {
 
     public Driver createDriverMapping(CreateDriverRequest request) throws NotFoundException {
         Optional<User> user = userService.findByLogin(request.getUserLogin());
-        if(user.isEmpty()) {
+        if (user.isEmpty()) {
             throw new NotFoundException("User not found");
         }
 
         Optional<Team> team = teamService.findTeam(request.getTeamName());
-        if(team.isEmpty()) {
+        if (team.isEmpty()) {
             throw new NotFoundException("Team not found");
         }
 
-        if(driverService.findDriver(Integer.parseInt(request.getStartingNumber())).isPresent()) {
-            throw new IllegalStateException("Driver already exists");
-        }
-
-        return Driver.builder()
-                .startingNumber(Integer.parseInt(request.getStartingNumber()))
-                .name(request.getName())
-                .surname(request.getSurname())
-                .nationality(request.getNationality())
-                .racesWon(Integer.parseInt(request.getRacesWon()))
-                .team(team.get())
-                .user(user.get())
-                .build();
-    }
-
-    public Driver createDriverForTeamMapper(CreateDriverForTeamRequest request, String teamName) throws NotFoundException {
-        Optional<Team> team = teamService.findTeam(teamName);
-        if(team.isEmpty()) {
-            throw new NotFoundException("Team not found");
-        }
-
-        Optional<User> user = userService.findByLogin(request.getUserLogin());
-        if(user.isEmpty()) {
-            throw new NotFoundException("User not found");
-        }
-
-        if(driverService.findDriver(Integer.parseInt(request.getStartingNumber())).isPresent()) {
+        if (driverService.findDriver(Integer.parseInt(request.getStartingNumber())).isPresent()) {
             throw new IllegalStateException("Driver already exists");
         }
 

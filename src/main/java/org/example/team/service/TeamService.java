@@ -18,15 +18,15 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    public Optional<Team> findTeam(String name) {
-        return teamRepository.findTeam(name);
+    public void createTeam(Team team) {
+        teamRepository.createTeam(team);
     }
 
     public List<Team> findAllTeams() {
         return teamRepository.findAllTeams();
     }
 
-    public void createTeam(Team team) {
-        teamRepository.createTeam(team);
+    public Optional<Team> findTeam(String name) {
+        return teamRepository.findTeam(name);
     }
 }

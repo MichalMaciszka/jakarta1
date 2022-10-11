@@ -18,14 +18,6 @@ public class DriverService {
         this.driverRepository = driverRepository;
     }
 
-    public Optional<Driver> findDriver(Integer number) {
-        return driverRepository.findDriverByStartingNumber(number);
-    }
-
-    public List<Driver> findAllDrivers() {
-        return driverRepository.findAllDrivers();
-    }
-
     public void createDriver(Driver driver) {
         driverRepository.createDriver(driver);
     }
@@ -34,23 +26,31 @@ public class DriverService {
         driverRepository.deleteDriver(driver);
     }
 
-    public void update(Driver driver) {
-        driverRepository.update(driver);
+    public List<Driver> findAllDrivers() {
+        return driverRepository.findAllDrivers();
     }
 
-    public List<Driver> findDriversByUser(String login) {
-        return driverRepository.findDriversByUser(login);
+    public Optional<Driver> findDriver(Integer number) {
+        return driverRepository.findDriverByStartingNumber(number);
     }
 
     public Optional<Driver> findDriverByLoginAndNumber(String login, Integer number) {
         return driverRepository.findDriverByUserAndNumber(login, number);
     }
 
+    public Optional<Driver> findDriverByTeamAndNumber(String teamName, Integer number) {
+        return driverRepository.findDriverByTeamAndNumber(teamName, number);
+    }
+
     public List<Driver> findDriversByTeam(String teamName) {
         return driverRepository.findDriversByTeam(teamName);
     }
 
-    public Optional<Driver> findDriverByTeamAndNumber(String teamName, Integer number) {
-        return driverRepository.findDriverByTeamAndNumber(teamName, number);
+    public List<Driver> findDriversByUser(String login) {
+        return driverRepository.findDriversByUser(login);
+    }
+
+    public void update(Driver driver) {
+        driverRepository.update(driver);
     }
 }

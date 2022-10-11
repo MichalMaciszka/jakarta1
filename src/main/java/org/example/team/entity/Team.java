@@ -21,7 +21,4 @@ public class Team implements Serializable {
     private String nationality;
     private Integer championshipsWon;
     private String teamChief;
-
-//    @ToString.Exclude
-//    private List<Driver> drivers;
 }

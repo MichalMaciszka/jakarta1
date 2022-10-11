@@ -18,15 +18,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> findByLogin(String login) {
-        return userRepository.findUser(login);
-    }
-
     public void create(User user) {
         userRepository.createUser(user);
     }
 
     public List<User> findAllUsers() {
         return userRepository.findAllUsers();
+    }
+
+    public Optional<User> findByLogin(String login) {
+        return userRepository.findUser(login);
     }
 }
