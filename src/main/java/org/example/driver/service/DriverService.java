@@ -34,20 +34,12 @@ public class DriverService {
         return driverRepository.findDriverByStartingNumber(number);
     }
 
-    public Optional<Driver> findDriverByLoginAndNumber(String login, Integer number) {
-        return driverRepository.findDriverByUserAndNumber(login, number);
-    }
-
     public Optional<Driver> findDriverByTeamAndNumber(String teamName, Integer number) {
         return driverRepository.findDriverByTeamAndNumber(teamName, number);
     }
 
     public List<Driver> findDriversByTeam(String teamName) {
         return driverRepository.findDriversByTeam(teamName);
-    }
-
-    public List<Driver> findDriversByUser(String login) {
-        return driverRepository.findDriversByUser(login);
     }
 
     public void update(Driver driver) {

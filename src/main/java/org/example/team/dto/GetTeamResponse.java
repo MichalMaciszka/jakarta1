@@ -16,6 +16,7 @@ public class GetTeamResponse {
     private String nationality;
     private String championshipsWon;
     private String teamChief;
+    private Boolean isActive;
 
     public static Function<Team, GetTeamResponse> entityToDtoMapper() {
         return team -> GetTeamResponse.builder()
@@ -23,6 +24,7 @@ public class GetTeamResponse {
                 .nationality(team.getNationality())
                 .championshipsWon(team.getChampionshipsWon().toString())
                 .teamChief(team.getTeamChief())
+                .isActive(team.getIsActive())
                 .build();
     }
 }

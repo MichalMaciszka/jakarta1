@@ -16,6 +16,7 @@ public class CreateTeamRequest {
     private String nationality;
     private String championshipsWon;
     private String teamChief;
+    private Boolean isActive;
 
     public static Function<CreateTeamRequest, Team> dtoToEntityMapper() {
         return dto -> Team.builder()
@@ -23,6 +24,7 @@ public class CreateTeamRequest {
                 .nationality(dto.getNationality())
                 .championshipsWon(Integer.parseInt(dto.getChampionshipsWon()))
                 .teamChief(dto.getTeamChief())
+                .isActive(dto.getIsActive())
                 .build();
     }
 }

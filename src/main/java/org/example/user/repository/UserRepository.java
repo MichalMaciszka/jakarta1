@@ -27,4 +27,8 @@ public class UserRepository {
     public Optional<User> findUser(String login) {
         return store.findUserByLogin(login);
     }
+
+    public void updatePortrait(String login, byte[] portrait) {
+        store.updatePortrait(login, portrait);
+    }
 }

@@ -29,4 +29,8 @@ public class UserService {
     public Optional<User> findByLogin(String login) {
         return userRepository.findUser(login);
     }
+
+    public void updatePortrait(String login, byte[] portrait) {
+        userRepository.updatePortrait(login, portrait);
+    }
 }

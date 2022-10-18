@@ -26,4 +26,7 @@ public class User implements Serializable {
     private String password;
 
     private LocalDate birthDate;
+
+    @ToString.Exclude
+    private byte[] portrait;
 }

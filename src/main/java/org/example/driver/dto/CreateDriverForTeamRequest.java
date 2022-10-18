@@ -15,5 +15,4 @@ public class CreateDriverForTeamRequest {
     private String surname;
     private String nationality;
     private String racesWon;
-    private String userLogin;
 }

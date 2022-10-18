@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.swing.text.html.Option;
+
 import lombok.extern.java.Log;
 import org.example.driver.entity.Driver;
 import org.example.team.entity.Team;
@@ -111,5 +113,19 @@ public class DataStore {
 
         drivers.remove(fromCollection.get());
         drivers.add(driver);
+    }
+
+    public synchronized void updatePortrait(String login, byte[] portrait) {
+        Optional<User> fromCollection = findUserByLogin(login);
+        if(fromCollection.isEmpty()) {
+            throw new IllegalArgumentException(
+                    String.format("User with login %s not exist", login)
+            );
+        }
+
+        User user = fromCollection.get();
+        users.remove(user);
+        user.setPortrait(portrait);
+        users.add(CloningUtility.clone(user));
     }
 }

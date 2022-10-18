@@ -44,24 +44,10 @@ public class DriverRepository {
                 .findFirst();
     }
 
-    public Optional<Driver> findDriverByUserAndNumber(String login, Integer number) {
-        return dataStore.findAllDrivers()
-                .stream()
-                .filter(x -> x.getStartingNumber().equals(number) && x.getUser().getLogin().equals(login))
-                .findFirst();
-    }
-
     public List<Driver> findDriversByTeam(String teamName) {
         return dataStore.findAllDrivers()
                 .stream()
                 .filter(x -> x.getTeam().getTeamName().equals(teamName))
-                .collect(Collectors.toList());
-    }
-
-    public List<Driver> findDriversByUser(String login) {
-        return dataStore.findAllDrivers()
-                .stream()
-                .filter(x -> x.getUser().getLogin().equals(login))
                 .collect(Collectors.toList());
     }
 

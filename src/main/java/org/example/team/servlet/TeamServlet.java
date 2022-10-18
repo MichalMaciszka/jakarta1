@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -68,7 +67,7 @@ public class TeamServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(MimeTypes.APPLICATION_JSON);
         String parsedPath = ServletUtility.parseRequestPath(req);
         long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
@@ -131,7 +130,7 @@ public class TeamServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String parsedPath = ServletUtility.parseRequestPath(req);
         long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
 
@@ -201,7 +200,7 @@ public class TeamServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UpdateDriverRequest requestBody = jsonb.fromJson(
                 req.getInputStream(),
                 UpdateDriverRequest.class

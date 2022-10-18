@@ -27,7 +27,7 @@ public class DataInitializer {
     }
 
     public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object o) {
-        System.out.println("esssa");
+        System.out.println("initializing...");
         initialize();
     }
 
@@ -66,24 +66,28 @@ public class DataInitializer {
                 .nationality("UK")
                 .teamChief("Zak Brown")
                 .teamName("McLaren")
+                .isActive(true)
                 .build();
         Team ferrari = Team.builder()
                 .championshipsWon(15)
                 .teamName("Scuderia Ferrari")
                 .teamChief("Mattia Binotto")
                 .nationality("Italy")
+                .isActive(true)
                 .build();
         Team redbull = Team.builder()
                 .nationality("UK")
                 .teamChief("Christian Horner")
                 .teamName("RedBull Racing")
                 .championshipsWon(5)
+                .isActive(false)
                 .build();
         Team amg = Team.builder()
                 .championshipsWon(9)
                 .teamName("Mercedes AMG")
                 .teamChief("Toto Wolff")
                 .nationality("Germany")
+                .isActive(true)
                 .build();
         teamService.createTeam(mclaren);
         teamService.createTeam(ferrari);
@@ -97,12 +101,10 @@ public class DataInitializer {
                 .racesWon(10)
                 .startingNumber(77)
                 .team(amg)
-                .user(first)
                 .build();
 
         Driver hamilton = Driver.builder()
                 .startingNumber(44)
-                .user(second)
                 .team(amg)
                 .name("Lewis")
                 .surname("Hamilton")
@@ -116,13 +118,11 @@ public class DataInitializer {
                 .name("Charles")
                 .surname("Leclerc")
                 .team(ferrari)
-                .user(first)
                 .startingNumber(16)
                 .build();
 
         Driver verstappen = Driver.builder()
                 .startingNumber(1)
-                .user(third)
                 .team(redbull)
                 .name("Max")
                 .surname("Verstappen")

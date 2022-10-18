@@ -28,5 +28,4 @@ public class Driver implements Serializable {
     private Integer racesWon;
 
     private Team team;
-    private User user;
 }
