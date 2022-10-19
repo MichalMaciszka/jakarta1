@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="name" value="#{teamView.name}" required="true"/>
+        <f:viewAction action="#{teamView.init()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+            <article class="text--justified">
+                <header><h2><h:outputText value="#{teamView.name}"/></h2></header>
+                <div class="character__grid">
+                    <div class="character__level_profession">
+                        Team Chief: <h:outputText value="#{teamView.team.teamChief}" />
+                    </div>
+                    <div class="character__experience">
+                        Championships won: <h:outputText value="#{teamView.team.championshipsWon}" />
+                    </div>
+                    <div class="character__stat character__strength">
+                        Nationality: <h:outputText value="#{teamView.team.nationality}" />
+                    </div>
+                    <div class="character__stat character__constitution">
+                        Is Active: <h:outputText value="#{teamView.team.isActive}" />
+                    </div>
+
+                    <h2>Drivers</h2>
+
+                    <h:dataTable value="#{teamView.drivers.drivers}" var="driver" styleClass="data-table">
+                        <h:column>
+                            <f:facet name="header">first name</f:facet>
+                            <h:outputText value="#{driver.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">surname</f:facet>
+                            <h:outputText value="#{driver.surname}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">starting number</f:facet>
+                            <h:outputText value="#{driver.number}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">details</f:facet>
+                            <h:link outcome="/drivers/driver_view.xhtml" value="view">
+                                <f:param name="number" value="#{driver.number}" />
+                            </h:link>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">delete</f:facet>
+                            <h:form>
+                                <h:commandButton styleClass="ui-button ui-control" value="delete" action="#{teamView.deleteDriverAction(driver)}" />
+                            </h:form>
+                        </h:column>
+                    </h:dataTable>
+                </div>
+            </article>
+    </ui:define>
+
+</ui:composition>

@@ -128,4 +128,20 @@ public class DataStore {
         user.setPortrait(portrait);
         users.add(CloningUtility.clone(user));
     }
+
+    public synchronized void deleteTeam(String teamName) {
+        var teamOpt = this.findTeamByName(teamName);
+        if(teamOpt.isPresent()) {
+            var team = teamOpt.get();
+            var drivers = findDriversByTeam(teamName);
+            drivers.stream().forEach(d -> deleteDriver(d.getStartingNumber()));
+            teams.remove(team);
+        }
+    }
+
+    public synchronized List<Driver> findDriversByTeam(String teamName) {
+        return drivers.stream()
+                .filter(x -> x.getTeam().getTeamName().equals(teamName))
+                .collect(Collectors.toList());
+    }
 }

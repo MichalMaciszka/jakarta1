@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import lombok.NoArgsConstructor;
+import org.example.driver.entity.Driver;
+import org.example.driver.service.DriverService;
 import org.example.team.entity.Team;
 import org.example.team.repository.TeamRepository;
 
@@ -12,6 +14,8 @@ import org.example.team.repository.TeamRepository;
 @NoArgsConstructor
 public class TeamService {
     private TeamRepository teamRepository;
+
+    private DriverService driverService;
 
     @Inject
     public TeamService(TeamRepository teamRepository) {
@@ -28,5 +32,9 @@ public class TeamService {
 
     public Optional<Team> findTeam(String name) {
         return teamRepository.findTeam(name);
+    }
+
+    public void deleteTeam(String name) {
+        teamRepository.deleteTeam(name);
     }
 }

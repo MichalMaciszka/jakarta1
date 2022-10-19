@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <ui:define name="content">
+            <article class="text--justified">
+                <header><h2>Teams</h2></header>
+                <h:dataTable value="#{teamList.teams.teams}" var="team" styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">name</f:facet>
+                        <h:outputText value="#{team.teamName}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">details</f:facet>
+                        <h:link outcome="/teams/team_view.xhtml" value="view">
+                            <f:param name="name" value="#{team.teamName}"/>
+                        </h:link>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">delete</f:facet>
+                        <h:form>
+                            <h:commandButton styleClass="ui-button ui-control" value="delete" action="#{teamList.deleteAction(team)}" />
+                        </h:form>
+                    </h:column>
+<!--                    <h:column>-->
+<!--                        <f:facet name="header">edit</f:facet>-->
+<!--                        <h:link outcome="/character/character_edit.xhtml" value="edit">-->
+<!--                            <f:param name="id" value="#{character.id}"/>-->
+<!--                        </h:link>-->
+<!--                    </h:column>-->
+<!--                    <h:column>-->
+<!--                        <f:facet name="header">delete</f:facet>-->
+<!--                        <h:form>-->
+<!--                            <h:commandButton styleClass="ui-button ui-control" value="delete"-->
+<!--                                             action="#{characterList.deleteAction(character)}"/>-->
+<!--                        </h:form>-->
+<!--                    </h:column>-->
+<!--                    <f:facet name="footer">-->
+<!--                        <h:button styleClass="ui-button ui-control" outcome="/character/character_create__basic.xhtml"-->
+<!--                                  value="Create new character"/>-->
+<!--                    </f:facet>-->
+                </h:dataTable>
+            </article>
+    </ui:define>
+
+</ui:composition>

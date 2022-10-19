@@ -27,4 +27,8 @@ public class TeamRepository {
     public Optional<Team> findTeam(String name) {
         return dataStore.findTeamByName(name);
     }
+
+    public void deleteTeam(String teamName) {
+        dataStore.deleteTeam(teamName);
+    }
 }

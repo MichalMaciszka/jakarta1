@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+<!--        <f:viewParam name="number" value="#{teamView.name}" required="true"/>-->
+<!--        <f:viewAction action="#{teamView.init()}"/>-->
+        <f:viewParam name="number" value="#{driverView.number}" required="true" />
+        <f:viewAction action="#{driverView.init()}" />
+    </f:metadata>
+
+    <ui:define name="content">
+        <article class="text--justified">
+            <header>
+                <h2>
+                    Driver with number: <h:outputText value="#{driverView.number}" />
+                </h2>
+            </header>
+
+            <div class="character__grid">
+                <div class="character__level_profession">
+                    Name: <h:outputText value="#{driverView.driver.name}" />
+                </div>
+                <div class="character__experience">
+                    Surname: <h:outputText value="#{driverView.driver.surname}" />
+                </div>
+                <div class="character__stat character__strength">
+                    Nationality: <h:outputText value="#{driverView.driver.nationality}" />
+                </div>
+                <div class="character__stat character__constitution">
+                    Races Won: <h:outputText value="#{driverView.driver.racesWon}" />
+                </div>
+                <div class="character__stat character__constitution">
+                    Current Team Name: <h:outputText value="#{driverView.driver.teamName}" />
+                </div>
+            </div>
+
+        </article>
+
+    </ui:define>
+
+</ui:composition>
