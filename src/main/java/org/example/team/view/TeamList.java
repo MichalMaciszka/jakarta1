@@ -29,7 +29,6 @@ public class TeamList implements Serializable {
     }
 
     public String deleteAction(GetTeamResponse team) {
-        System.out.println("siema");
         teamService.deleteTeam(team.getTeamName());
         return "teams_list?faces-redirect=true";
     }

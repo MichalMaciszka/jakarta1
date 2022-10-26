@@ -6,8 +6,6 @@
                 template="/WEB-INF/template/main.xhtml">
 
     <f:metadata>
-<!--        <f:viewParam name="number" value="#{teamView.name}" required="true"/>-->
-<!--        <f:viewAction action="#{teamView.init()}"/>-->
         <f:viewParam name="number" value="#{driverView.number}" required="true" />
         <f:viewAction action="#{driverView.init()}" />
     </f:metadata>
@@ -21,19 +19,19 @@
             </header>
 
             <div class="character__grid">
-                <div class="character__level_profession">
+                <div>
                     Name: <h:outputText value="#{driverView.driver.name}" />
                 </div>
-                <div class="character__experience">
+                <div>
                     Surname: <h:outputText value="#{driverView.driver.surname}" />
                 </div>
-                <div class="character__stat character__strength">
+                <div>
                     Nationality: <h:outputText value="#{driverView.driver.nationality}" />
                 </div>
-                <div class="character__stat character__constitution">
+                <div>
                     Races Won: <h:outputText value="#{driverView.driver.racesWon}" />
                 </div>
-                <div class="character__stat character__constitution">
+                <div>
                     Current Team Name: <h:outputText value="#{driverView.driver.teamName}" />
                 </div>
             </div>

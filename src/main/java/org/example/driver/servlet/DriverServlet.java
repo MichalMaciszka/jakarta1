@@ -37,7 +37,7 @@ public class DriverServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String parsedPath = ServletUtility.parseRequestPath(req);
         long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
         if (slashesCounter != 1) {
@@ -59,11 +59,10 @@ public class DriverServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(MimeTypes.APPLICATION_JSON);
 
         String parsedPath = ServletUtility.parseRequestPath(req);
-        System.out.println(parsedPath);
         long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
 
         if (slashesCounter == 0) {
@@ -96,7 +95,6 @@ public class DriverServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String parsedPath = ServletUtility.parseRequestPath(req);
-        System.out.println(parsedPath);
         long slashesCounter = parsedPath.chars().filter(c -> c == '/').count();
         if (slashesCounter != 0) {
             resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
@@ -128,7 +126,7 @@ public class DriverServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UpdateDriverRequest requestBody = jsonb.fromJson(
                 req.getInputStream(),
                 UpdateDriverRequest.class

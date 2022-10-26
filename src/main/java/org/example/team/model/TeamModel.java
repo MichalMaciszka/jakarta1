@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.driver.dto.GetDriverResponse;
 import org.example.team.entity.Team;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.function.Function;
 
 @Builder
@@ -16,6 +14,8 @@ import java.util.function.Function;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeamModel implements Serializable {
+    private String name;
+
     private String nationality;
 
     private Integer championshipsWon;
@@ -30,6 +30,7 @@ public class TeamModel implements Serializable {
                 .teamChief(team.getTeamChief())
                 .isActive(team.getIsActive())
                 .nationality(team.getNationality())
+                .name(team.getTeamName())
                 .build();
     }
 }

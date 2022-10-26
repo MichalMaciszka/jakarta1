@@ -59,8 +59,6 @@ public class PortraitServlet extends HttpServlet {
         if(user.isPresent()) {
             boolean fileExists = PortraitUtils.isPresent(filePath, login);
             Part portrait = req.getPart("portrait");
-//            PortraitUtils.saveImage(filePath, login, portrait.getInputStream().readAllBytes());
-//            userService.updatePortrait(login, portrait.getInputStream().readAllBytes());
             userService.updatePortrait(filePath, login, portrait.getInputStream().readAllBytes());
             if(fileExists) {
                 resp.setStatus(HttpServletResponse.SC_OK);
@@ -105,8 +103,6 @@ public class PortraitServlet extends HttpServlet {
         String filePath = getServletContext().getInitParameter("imageSavePath");
 
         userService.deletePortrait(filePath, login);
-//        PortraitUtils.delete(filePath, login);
-//        userService.updatePortrait(login, null);
         resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 }

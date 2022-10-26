@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
-import javax.swing.text.html.Option;
 
 import lombok.extern.java.Log;
 import org.example.driver.entity.Driver;
@@ -134,7 +133,7 @@ public class DataStore {
         if(teamOpt.isPresent()) {
             var team = teamOpt.get();
             var drivers = findDriversByTeam(teamName);
-            drivers.stream().forEach(d -> deleteDriver(d.getStartingNumber()));
+            drivers.forEach(d -> deleteDriver(d.getStartingNumber()));
             teams.remove(team);
         }
     }

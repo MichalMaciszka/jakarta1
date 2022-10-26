@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = "/api/hello")
 public class HelloServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String tmp = getServletContext().getInitParameter("imageSavePath");
         resp.getWriter().write(tmp);
     }

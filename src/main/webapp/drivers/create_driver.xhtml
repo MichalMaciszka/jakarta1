@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="defaultTeam" value="#{driverCreate.defaultTeam}" required="false" />
+        <f:viewAction action="#{driverCreate.init()}" />
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:outputStylesheet library="default" name="css/styles.css" />
+        <article class="text--justified">
+            <header><h2>Create driver</h2></header>
+            <h:form>
+                <h:outputLabel for="name" value="Name: " />
+                <h:inputText id="name" class="ui-control ui-input" value="#{driverCreate.driverCreateModel.name}" />
+                <h:outputLabel for="surname" value="Surname: " />
+                <h:inputText id="surname" class="ui-control ui-input" value="#{driverCreate.driverCreateModel.surname}" />
+                <h:outputLabel for="startingNumber" value="Starting number: " />
+                <h:inputText id="startingNumber" class="ui-control ui-input" value="#{driverCreate.driverCreateModel.startingNumber}" />
+                <h:outputLabel for="nationality" value="Nationality: " />
+                <h:inputText id="nationality" class="ui-control ui-input" value="#{driverCreate.driverCreateModel.nationality}" />
+                <h:outputLabel for="racesWon" value="Races won: " />
+                <h:inputText id="racesWon" class="ui-control ui-input" value="#{driverCreate.driverCreateModel.racesWon}" />
+                <h:outputLabel for="team" value="Team" />
+                <h:selectOneRadio id="team" value="#{driverCreate.driverCreateModel.teamModel}" >
+                    <f:selectItems var="t" value="#{driverCreate.teams}" itemValue="#{t}"
+                                   itemLabel="#{t.name}" itemLabelEscaped="false" />
+                </h:selectOneRadio>
+                <h:commandButton value="Submit" immediate="false" action="#{driverCreate.addAction()}" />
+            </h:form>
+        </article>
+    </ui:define>
+</ui:composition>

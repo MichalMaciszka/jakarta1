@@ -14,17 +14,23 @@
             <article class="text--justified">
                 <header><h2><h:outputText value="#{teamView.name}"/></h2></header>
                 <div class="character__grid">
-                    <div class="character__level_profession">
+                    <div>
                         Team Chief: <h:outputText value="#{teamView.team.teamChief}" />
                     </div>
-                    <div class="character__experience">
+                    <div>
                         Championships won: <h:outputText value="#{teamView.team.championshipsWon}" />
                     </div>
-                    <div class="character__stat character__strength">
+                    <div>
                         Nationality: <h:outputText value="#{teamView.team.nationality}" />
                     </div>
-                    <div class="character__stat character__constitution">
+                    <div>
                         Is Active: <h:outputText value="#{teamView.team.isActive}" />
+                    </div>
+
+                    <div>
+                        <h:link outcome="/drivers/create_driver.xhtml" value="Add driver">
+                            <f:param name="defaultTeam" value="#{teamView.name}" />
+                        </h:link>
                     </div>
 
                     <h2>Drivers</h2>
@@ -45,6 +51,12 @@
                         <h:column>
                             <f:facet name="header">details</f:facet>
                             <h:link outcome="/drivers/driver_view.xhtml" value="view">
+                                <f:param name="number" value="#{driver.number}" />
+                            </h:link>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">edit</f:facet>
+                            <h:link outcome="/drivers/edit_driver.xhtml" value="edit">
                                 <f:param name="number" value="#{driver.number}" />
                             </h:link>
                         </h:column>

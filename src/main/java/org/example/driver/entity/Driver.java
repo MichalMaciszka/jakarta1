@@ -10,7 +10,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.example.team.entity.Team;
-import org.example.user.entity.User;
 
 @Getter
 @Setter
