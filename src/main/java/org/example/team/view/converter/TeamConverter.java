@@ -23,7 +23,7 @@ public class TeamConverter implements Converter<TeamModel> {
 
     @Override
     public TeamModel getAsObject(FacesContext facesContext, UIComponent uiComponent, String s) {
-        if(s == null || s.isBlank()) {
+        if (s == null || s.isBlank()) {
             return null;
         }
         Optional<Team> team = service.findTeam(s);

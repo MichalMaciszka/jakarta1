@@ -1,7 +1,10 @@
 package org.example.driver.model;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.example.driver.entity.Driver;
 import org.example.team.entity.Team;
 import org.example.team.model.TeamModel;

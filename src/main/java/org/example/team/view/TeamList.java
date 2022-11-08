@@ -22,7 +22,7 @@ public class TeamList implements Serializable {
     }
 
     public TeamsModel getTeams() {
-        if(teams == null) {
+        if (teams == null) {
             teams = TeamsModel.entityToModelMapper().apply(teamService.findAllTeams());
         }
         return teams;

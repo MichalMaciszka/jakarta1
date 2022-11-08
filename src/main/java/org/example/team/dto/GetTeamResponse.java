@@ -1,11 +1,12 @@
 package org.example.team.dto;
 
-import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.team.entity.Team;
+
+import java.util.function.Function;
 
 @AllArgsConstructor
 @NoArgsConstructor

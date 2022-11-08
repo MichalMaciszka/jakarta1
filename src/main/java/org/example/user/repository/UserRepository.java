@@ -1,11 +1,12 @@
 package org.example.user.repository;
 
-import java.util.List;
-import java.util.Optional;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 import org.example.datastore.DataStore;
 import org.example.user.entity.User;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.Optional;
 
 @Dependent
 public class UserRepository {

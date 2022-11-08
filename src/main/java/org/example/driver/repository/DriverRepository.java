@@ -1,12 +1,13 @@
 package org.example.driver.repository;
 
+import org.example.datastore.DataStore;
+import org.example.driver.entity.Driver;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import org.example.datastore.DataStore;
-import org.example.driver.entity.Driver;
 
 @Dependent
 public class DriverRepository {

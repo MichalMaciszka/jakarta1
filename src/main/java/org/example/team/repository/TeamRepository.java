@@ -1,11 +1,12 @@
 package org.example.team.repository;
 
-import java.util.List;
-import java.util.Optional;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 import org.example.datastore.DataStore;
 import org.example.team.entity.Team;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.Optional;
 
 @Dependent
 public class TeamRepository {
@@ -30,5 +31,13 @@ public class TeamRepository {
 
     public void deleteTeam(String teamName) {
         dataStore.deleteTeam(teamName);
+    }
+
+    public void deleteAll() {
+        dataStore.deleteAllTeams();
+    }
+
+    public void updateTeam(Team team) {
+        dataStore.updateTeam(team);
     }
 }

@@ -1,6 +1,10 @@
 package org.example.team.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Singular;
 import org.example.team.dto.GetTeamResponse;
 import org.example.team.entity.Team;
 

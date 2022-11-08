@@ -50,9 +50,9 @@ public class DriverCreate implements Serializable {
         team.ifPresent(value -> driverCreateModel.setTeamModel(TeamModel.entityToModelMapper().apply(value)));
     }
 
-    public String addAction() throws IOException{
+    public String addAction() throws IOException {
         var driver = driverService.findDriver(driverCreateModel.getStartingNumber());
-        if(driver.isPresent()) {
+        if (driver.isPresent()) {
             FacesContext.getCurrentInstance().getExternalContext()
                     .responseSendError(HttpServletResponse.SC_CONFLICT, "invalid number");
             return "";

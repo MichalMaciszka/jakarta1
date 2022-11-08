@@ -34,7 +34,7 @@ public class DriverView implements Serializable {
 
     public void init() throws IOException {
         Optional<Driver> opt = driverService.findDriver(number);
-        if(opt.isPresent()) {
+        if (opt.isPresent()) {
             this.driver = DriverModel.entityToModelMapper().apply(opt.get());
         } else {
             FacesContext.getCurrentInstance()

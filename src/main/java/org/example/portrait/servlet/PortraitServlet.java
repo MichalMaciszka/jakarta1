@@ -1,11 +1,11 @@
 package org.example.portrait.servlet;
 
 import org.example.exception.NotFoundException;
-import org.example.utils.PortraitUtils;
 import org.example.user.entity.User;
 import org.example.user.service.UserService;
 import org.example.utils.HttpHeaders;
 import org.example.utils.MimeTypes;
+import org.example.utils.PortraitUtils;
 import org.example.utils.ServletUtility;
 
 import javax.inject.Inject;
@@ -35,7 +35,7 @@ public class PortraitServlet extends HttpServlet {
         String path = ServletUtility.parseRequestPath(req);
         String login = path.split("/")[1];
         Optional<User> user = userService.findByLogin(login);
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             try {
                 byte[] image = PortraitUtils.getImage(filePath, login);
                 resp.addHeader(HttpHeaders.CONTENT_TYPE, MimeTypes.IMAGE_PNG);
@@ -56,11 +56,11 @@ public class PortraitServlet extends HttpServlet {
         String path = ServletUtility.parseRequestPath(req);
         String login = path.split("/")[1];
         Optional<User> user = userService.findByLogin(login);
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             boolean fileExists = PortraitUtils.isPresent(filePath, login);
             Part portrait = req.getPart("portrait");
             userService.updatePortrait(filePath, login, portrait.getInputStream().readAllBytes());
-            if(fileExists) {
+            if (fileExists) {
                 resp.setStatus(HttpServletResponse.SC_OK);
             } else {
                 resp.setStatus(HttpServletResponse.SC_CREATED);
@@ -76,7 +76,7 @@ public class PortraitServlet extends HttpServlet {
         String path = ServletUtility.parseRequestPath(req);
         String login = path.split("/")[1];
         Optional<User> user = userService.findByLogin(login);
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             Part portrait = req.getPart("portrait");
             if (PortraitUtils.isPresent(filePath, login)) {
                 resp.sendError(HttpServletResponse.SC_CONFLICT);

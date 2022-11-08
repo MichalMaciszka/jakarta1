@@ -42,7 +42,7 @@ public class TeamView implements Serializable {
 
     public void init() throws IOException {
         Optional<Team> team = teamService.findTeam(name);
-        if(team.isPresent()) {
+        if (team.isPresent()) {
             this.team = TeamModel.entityToModelMapper().apply(team.get());
         } else {
             FacesContext.getCurrentInstance()
@@ -52,7 +52,7 @@ public class TeamView implements Serializable {
     }
 
     public DriversModel getDrivers() {
-        if(drivers == null) {
+        if (drivers == null) {
             drivers = DriversModel.entityToModelMapper().apply(driverService.findDriversByTeam(name));
         }
         return drivers;

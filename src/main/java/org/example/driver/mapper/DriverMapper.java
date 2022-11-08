@@ -1,8 +1,5 @@
 package org.example.driver.mapper;
 
-import java.util.Optional;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import lombok.NoArgsConstructor;
 import org.example.driver.dto.CreateDriverForTeamRequest;
 import org.example.driver.dto.CreateDriverRequest;
@@ -11,6 +8,10 @@ import org.example.driver.service.DriverService;
 import org.example.exception.NotFoundException;
 import org.example.team.entity.Team;
 import org.example.team.service.TeamService;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.util.Optional;
 
 @ApplicationScoped
 @NoArgsConstructor

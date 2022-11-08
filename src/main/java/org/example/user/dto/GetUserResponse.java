@@ -1,11 +1,12 @@
 package org.example.user.dto;
 
-import java.time.LocalDate;
-import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.example.user.entity.User;
+
+import java.time.LocalDate;
+import java.util.function.Function;
 
 @Data
 @Builder

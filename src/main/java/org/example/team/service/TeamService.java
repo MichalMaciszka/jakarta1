@@ -1,12 +1,13 @@
 package org.example.team.service;
 
-import java.util.List;
-import java.util.Optional;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import lombok.NoArgsConstructor;
 import org.example.team.entity.Team;
 import org.example.team.repository.TeamRepository;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 @NoArgsConstructor
@@ -32,5 +33,13 @@ public class TeamService {
 
     public void deleteTeam(String name) {
         teamRepository.deleteTeam(name);
+    }
+
+    public void deleteAll() {
+        teamRepository.deleteAll();
+    }
+
+    public void updateTeam(Team team) {
+        teamRepository.updateTeam(team);
     }
 }

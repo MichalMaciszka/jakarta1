@@ -17,11 +17,11 @@ public class PortraitUtils {
     public static void saveImage(String path, String login, byte[] image) throws IOException {
         Path output = Paths.get(String.format("/%s/%s.png", path, login));
         Files.createDirectories(Paths.get(path));
-        if(Files.exists(output)) {
+        if (Files.exists(output)) {
             Files.delete(output);
         }
         Files.createFile(output);
-        try(FileOutputStream stream = new FileOutputStream(output.toFile())) {
+        try (FileOutputStream stream = new FileOutputStream(output.toFile())) {
             stream.write(image);
         }
 

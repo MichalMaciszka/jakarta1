@@ -1,5 +1,8 @@
 package org.example.utils;
 
+import lombok.experimental.UtilityClass;
+import lombok.extern.java.Log;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,8 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.logging.Level;
-import lombok.experimental.UtilityClass;
-import lombok.extern.java.Log;
 
 @Log
 @UtilityClass

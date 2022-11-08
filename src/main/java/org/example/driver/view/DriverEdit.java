@@ -7,6 +7,7 @@ import org.example.driver.model.DriverEditModel;
 import org.example.driver.service.DriverService;
 import org.example.team.model.TeamModel;
 import org.example.team.service.TeamService;
+
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -42,7 +43,7 @@ public class DriverEdit implements Serializable {
 
     public void init() throws IOException {
         Optional<Driver> driver = driverService.findDriver(startingNumber);
-        if(driver.isPresent()) {
+        if (driver.isPresent()) {
             teams = teamService
                     .findAllTeams()
                     .stream()

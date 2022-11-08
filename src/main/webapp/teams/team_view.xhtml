@@ -11,64 +11,65 @@
     </f:metadata>
 
     <ui:define name="content">
-            <article class="text--justified">
-                <header><h2><h:outputText value="#{teamView.name}"/></h2></header>
-                <div class="character__grid">
-                    <div>
-                        Team Chief: <h:outputText value="#{teamView.team.teamChief}" />
-                    </div>
-                    <div>
-                        Championships won: <h:outputText value="#{teamView.team.championshipsWon}" />
-                    </div>
-                    <div>
-                        Nationality: <h:outputText value="#{teamView.team.nationality}" />
-                    </div>
-                    <div>
-                        Is Active: <h:outputText value="#{teamView.team.isActive}" />
-                    </div>
-
-                    <div>
-                        <h:link outcome="/drivers/create_driver.xhtml" value="Add driver">
-                            <f:param name="defaultTeam" value="#{teamView.name}" />
-                        </h:link>
-                    </div>
-
-                    <h2>Drivers</h2>
-
-                    <h:dataTable value="#{teamView.drivers.drivers}" var="driver" styleClass="data-table">
-                        <h:column>
-                            <f:facet name="header">first name</f:facet>
-                            <h:outputText value="#{driver.name}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">surname</f:facet>
-                            <h:outputText value="#{driver.surname}" />
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">starting number</f:facet>
-                            <h:outputText value="#{driver.number}" />
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">details</f:facet>
-                            <h:link outcome="/drivers/driver_view.xhtml" value="view">
-                                <f:param name="number" value="#{driver.number}" />
-                            </h:link>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">edit</f:facet>
-                            <h:link outcome="/drivers/edit_driver.xhtml" value="edit">
-                                <f:param name="number" value="#{driver.number}" />
-                            </h:link>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">delete</f:facet>
-                            <h:form>
-                                <h:commandButton styleClass="ui-button ui-control" value="delete" action="#{teamView.deleteDriverAction(driver)}" />
-                            </h:form>
-                        </h:column>
-                    </h:dataTable>
+        <article class="text--justified">
+            <header><h2><h:outputText value="#{teamView.name}"/></h2></header>
+            <div class="character__grid">
+                <div>
+                    Team Chief: <h:outputText value="#{teamView.team.teamChief}"/>
                 </div>
-            </article>
+                <div>
+                    Championships won: <h:outputText value="#{teamView.team.championshipsWon}"/>
+                </div>
+                <div>
+                    Nationality: <h:outputText value="#{teamView.team.nationality}"/>
+                </div>
+                <div>
+                    Is Active: <h:outputText value="#{teamView.team.isActive}"/>
+                </div>
+
+                <div>
+                    <h:link outcome="/drivers/create_driver.xhtml" value="Add driver">
+                        <f:param name="defaultTeam" value="#{teamView.name}"/>
+                    </h:link>
+                </div>
+
+                <h2>Drivers</h2>
+
+                <h:dataTable value="#{teamView.drivers.drivers}" var="driver" styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">first name</f:facet>
+                        <h:outputText value="#{driver.name}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">surname</f:facet>
+                        <h:outputText value="#{driver.surname}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">starting number</f:facet>
+                        <h:outputText value="#{driver.number}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">details</f:facet>
+                        <h:link outcome="/drivers/driver_view.xhtml" value="view">
+                            <f:param name="number" value="#{driver.number}"/>
+                        </h:link>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">edit</f:facet>
+                        <h:link outcome="/drivers/edit_driver.xhtml" value="edit">
+                            <f:param name="number" value="#{driver.number}"/>
+                        </h:link>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">delete</f:facet>
+                        <h:form>
+                            <h:commandButton styleClass="ui-button ui-control" value="delete"
+                                             action="#{teamView.deleteDriverAction(driver)}"/>
+                        </h:form>
+                    </h:column>
+                </h:dataTable>
+            </div>
+        </article>
     </ui:define>
 
 </ui:composition>

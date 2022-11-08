@@ -1,12 +1,13 @@
 package org.example.driver.service;
 
-import java.util.List;
-import java.util.Optional;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import lombok.NoArgsConstructor;
 import org.example.driver.entity.Driver;
 import org.example.driver.repository.DriverRepository;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 @NoArgsConstructor

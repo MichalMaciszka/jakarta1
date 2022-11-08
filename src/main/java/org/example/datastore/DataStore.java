@@ -1,18 +1,18 @@
 package org.example.datastore;
 
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.enterprise.context.ApplicationScoped;
-
 import lombok.extern.java.Log;
 import org.example.driver.entity.Driver;
 import org.example.team.entity.Team;
 import org.example.user.entity.User;
 import org.example.utils.CloningUtility;
+
+import javax.enterprise.context.ApplicationScoped;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Log
 @ApplicationScoped
@@ -116,7 +116,7 @@ public class DataStore {
 
     public synchronized void updatePortrait(String login, byte[] portrait) {
         Optional<User> fromCollection = findUserByLogin(login);
-        if(fromCollection.isEmpty()) {
+        if (fromCollection.isEmpty()) {
             throw new IllegalArgumentException(
                     String.format("User with login %s not exist", login)
             );
@@ -130,7 +130,7 @@ public class DataStore {
 
     public synchronized void deleteTeam(String teamName) {
         var teamOpt = this.findTeamByName(teamName);
-        if(teamOpt.isPresent()) {
+        if (teamOpt.isPresent()) {
             var team = teamOpt.get();
             var drivers = findDriversByTeam(teamName);
             drivers.forEach(d -> deleteDriver(d.getStartingNumber()));
@@ -142,5 +142,21 @@ public class DataStore {
         return drivers.stream()
                 .filter(x -> x.getTeam().getTeamName().equals(teamName))
                 .collect(Collectors.toList());
+    }
+
+    public synchronized void deleteAllTeams() {
+        findAllTeams().forEach(t -> deleteTeam(t.getTeamName()));
+    }
+
+    public synchronized void updateTeam(Team team) {
+        Optional<Team> fromCollection = findTeamByName(team.getTeamName());
+        if (fromCollection.isEmpty()) {
+            throw new IllegalArgumentException(String.format("Team %s not exists", team.getTeamName()));
+        }
+
+        List<Driver> teamDrivers = findDriversByTeam(team.getTeamName());
+        teamDrivers.forEach(x -> x.setTeam(team));
+        teams.remove(fromCollection.get());
+        teams.add(team);
     }
 }

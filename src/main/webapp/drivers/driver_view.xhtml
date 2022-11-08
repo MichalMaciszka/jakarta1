@@ -6,33 +6,33 @@
                 template="/WEB-INF/template/main.xhtml">
 
     <f:metadata>
-        <f:viewParam name="number" value="#{driverView.number}" required="true" />
-        <f:viewAction action="#{driverView.init()}" />
+        <f:viewParam name="number" value="#{driverView.number}" required="true"/>
+        <f:viewAction action="#{driverView.init()}"/>
     </f:metadata>
 
     <ui:define name="content">
         <article class="text--justified">
             <header>
                 <h2>
-                    Driver with number: <h:outputText value="#{driverView.number}" />
+                    Driver with number: <h:outputText value="#{driverView.number}"/>
                 </h2>
             </header>
 
             <div class="character__grid">
                 <div>
-                    Name: <h:outputText value="#{driverView.driver.name}" />
+                    Name: <h:outputText value="#{driverView.driver.name}"/>
                 </div>
                 <div>
-                    Surname: <h:outputText value="#{driverView.driver.surname}" />
+                    Surname: <h:outputText value="#{driverView.driver.surname}"/>
                 </div>
                 <div>
-                    Nationality: <h:outputText value="#{driverView.driver.nationality}" />
+                    Nationality: <h:outputText value="#{driverView.driver.nationality}"/>
                 </div>
                 <div>
-                    Races Won: <h:outputText value="#{driverView.driver.racesWon}" />
+                    Races Won: <h:outputText value="#{driverView.driver.racesWon}"/>
                 </div>
                 <div>
-                    Current Team Name: <h:outputText value="#{driverView.driver.teamName}" />
+                    Current Team Name: <h:outputText value="#{driverView.driver.teamName}"/>
                 </div>
             </div>
 

@@ -1,6 +1,5 @@
 package org.example.driver.entity;
 
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -10,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.example.team.entity.Team;
+
+import java.io.Serializable;
 
 @Getter
 @Setter

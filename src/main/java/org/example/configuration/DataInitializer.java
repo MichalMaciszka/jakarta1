@@ -1,10 +1,5 @@
 package org.example.configuration;
 
-import java.time.LocalDate;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Initialized;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
 import org.example.driver.entity.Driver;
 import org.example.driver.service.DriverService;
 import org.example.team.entity.Team;
@@ -12,6 +7,12 @@ import org.example.team.service.TeamService;
 import org.example.user.entity.User;
 import org.example.user.entity.UserRole;
 import org.example.user.service.UserService;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Initialized;
+import javax.enterprise.event.Observes;
+import javax.inject.Inject;
+import java.time.LocalDate;
 
 @ApplicationScoped
 public class DataInitializer {

@@ -1,7 +1,11 @@
 package org.example.driver.model;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Singular;
 import org.example.driver.dto.GetDriverResponse;
 import org.example.driver.entity.Driver;
 

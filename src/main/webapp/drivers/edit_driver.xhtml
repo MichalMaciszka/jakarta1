@@ -6,27 +6,28 @@
                 template="/WEB-INF/template/main.xhtml">
 
     <f:metadata>
-        <f:viewParam name="number" value="#{driverEdit.startingNumber}" required="true" />
-        <f:viewAction action="#{driverEdit.init()}" />
+        <f:viewParam name="number" value="#{driverEdit.startingNumber}" required="true"/>
+        <f:viewAction action="#{driverEdit.init()}"/>
     </f:metadata>
 
     <ui:define name="content">
-        <h:outputStylesheet library="default" name="css/styles.css" />
+        <h:outputStylesheet library="default" name="css/styles.css"/>
         <article class="text--justified">
             <header><h2>Edit driver</h2></header>
             <h:form>
-                <h:outputLabel for = "name" value="Name: " />
+                <h:outputLabel for="name" value="Name: "/>
                 <h:inputText id="name" class="ui-control ui-input" value="#{driverEdit.driverEditModel.name}"/>
-                <h:outputLabel for = "surname" value="Surname: " />
-                <h:inputText id="surname" class="ui-control ui-input" value="#{driverEdit.driverEditModel.surname}" />
-                <h:outputLabel for = "nationality" value="Nationality: " />
-                <h:inputText id="nationality" class="ui-control ui-input" value="#{driverEdit.driverEditModel.nationality}" />
-                <h:outputLabel for="racesWon" value="Races won: " />
-                <h:inputText id="racesWon" class="ui-control ui-input" value="#{driverEdit.driverEditModel.racesWon}" />
-                <h:outputLabel for = "team"  value="Team: " />
+                <h:outputLabel for="surname" value="Surname: "/>
+                <h:inputText id="surname" class="ui-control ui-input" value="#{driverEdit.driverEditModel.surname}"/>
+                <h:outputLabel for="nationality" value="Nationality: "/>
+                <h:inputText id="nationality" class="ui-control ui-input"
+                             value="#{driverEdit.driverEditModel.nationality}"/>
+                <h:outputLabel for="racesWon" value="Races won: "/>
+                <h:inputText id="racesWon" class="ui-control ui-input" value="#{driverEdit.driverEditModel.racesWon}"/>
+                <h:outputLabel for="team" value="Team: "/>
                 <h:selectOneListbox id="team" value="#{driverEdit.driverEditModel.teamModel}">
                     <f:selectItems var="t" value="#{driverEdit.teams}" itemValue="#{t}"
-                                   itemLabel="#{t.name}" itemLabelEscaped="false" />
+                                   itemLabel="#{t.name}" itemLabelEscaped="false"/>
                 </h:selectOneListbox>
                 <h:commandButton value="Submit" immediate="false" action="#{driverEdit.saveAction()}">
                 </h:commandButton>
