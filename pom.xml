@@ -49,10 +49,30 @@
                     <plugin>
                         <groupId>io.openliberty.tools</groupId>
                         <artifactId>liberty-maven-plugin</artifactId>
-                        <version>3.2.3</version>
+                        <version>3.3</version>
+                        <configuration>
+                            <copyDependencies>
+                                <dependency>
+                                    <groupId>com.h2database</groupId>
+                                    <artifactId>h2</artifactId>
+                                </dependency>
+                            </copyDependencies>
+                        </configuration>
+
                     </plugin>
                 </plugins>
             </build>
+
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.4.200</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
         </profile>
     </profiles>
 

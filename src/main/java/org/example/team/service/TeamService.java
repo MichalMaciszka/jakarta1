@@ -6,6 +6,8 @@ import org.example.team.repository.TeamRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.RollbackException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +21,8 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    public void createTeam(Team team) {
+    @Transactional
+    public void createTeam(Team team) throws RollbackException {
         teamRepository.createTeam(team);
     }
 
@@ -31,14 +34,17 @@ public class TeamService {
         return teamRepository.findTeam(name);
     }
 
+    @Transactional
     public void deleteTeam(String name) {
         teamRepository.deleteTeam(name);
     }
 
+    @Transactional
     public void deleteAll() {
         teamRepository.deleteAll();
     }
 
+    @Transactional
     public void updateTeam(Team team) {
         teamRepository.updateTeam(team);
     }

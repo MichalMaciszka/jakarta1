@@ -1,43 +1,45 @@
 package org.example.team.repository;
 
-import org.example.datastore.DataStore;
+import lombok.NoArgsConstructor;
 import org.example.team.entity.Team;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import javax.enterprise.context.RequestScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-@Dependent
+@RequestScoped
+@NoArgsConstructor
 public class TeamRepository {
-    private final DataStore dataStore;
+    private EntityManager em;
 
-    @Inject
-    public TeamRepository(DataStore dataStore) {
-        this.dataStore = dataStore;
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
     public void createTeam(Team team) {
-        dataStore.createTeam(team);
+        em.persist(team);
     }
 
     public List<Team> findAllTeams() {
-        return dataStore.findAllTeams();
+        return em.createQuery("select t from Team t", Team.class).getResultList();
     }
 
     public Optional<Team> findTeam(String name) {
-        return dataStore.findTeamByName(name);
+        return Optional.ofNullable(em.find(Team.class, name));
     }
 
     public void deleteTeam(String teamName) {
-        dataStore.deleteTeam(teamName);
+        em.remove(em.find(Team.class, teamName));
     }
 
     public void deleteAll() {
-        dataStore.deleteAllTeams();
+        em.clear();
     }
 
     public void updateTeam(Team team) {
-        dataStore.updateTeam(team);
+        em.merge(team);
     }
 }

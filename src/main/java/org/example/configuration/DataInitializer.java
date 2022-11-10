@@ -1,5 +1,6 @@
 package org.example.configuration;
 
+import lombok.SneakyThrows;
 import org.example.driver.entity.Driver;
 import org.example.driver.service.DriverService;
 import org.example.team.entity.Team;
@@ -10,6 +11,7 @@ import org.example.user.service.UserService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
+import javax.enterprise.context.control.RequestContextController;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -19,20 +21,26 @@ public class DataInitializer {
     private final UserService userService;
     private final TeamService teamService;
     private final DriverService driverService;
+    private final RequestContextController requestContextController;
 
     @Inject
-    public DataInitializer(UserService userService, TeamService teamService, DriverService driverService) {
+    public DataInitializer(UserService userService, TeamService teamService, DriverService driverService, RequestContextController requestContextController) {
         this.userService = userService;
         this.teamService = teamService;
         this.driverService = driverService;
+        this.requestContextController = requestContextController;
     }
+
 
     public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object o) {
         System.out.println("initializing...");
         initialize();
     }
 
+    @SneakyThrows
     private synchronized void initialize() {
+        requestContextController.activate();
+
         User first = User.builder()
                 .birthDate(LocalDate.now())
                 .login("first")
@@ -134,5 +142,7 @@ public class DataInitializer {
         driverService.createDriver(hamilton);
         driverService.createDriver(leclerc);
         driverService.createDriver(verstappen);
+
+        requestContextController.deactivate();
     }
 }

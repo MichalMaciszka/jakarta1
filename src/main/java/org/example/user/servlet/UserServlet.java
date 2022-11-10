@@ -1,6 +1,6 @@
 package org.example.user.servlet;
 
-import org.example.user.dto.CreateUserRequest;
+import  org.example.user.dto.CreateUserRequest;
 import org.example.user.dto.GetUserResponse;
 import org.example.user.entity.User;
 import org.example.user.service.UserService;
@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.RollbackException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -47,8 +48,8 @@ public class UserServlet extends HttpServlet {
                     )
             );
             resp.setStatus(HttpServletResponse.SC_CREATED);
-        } catch (IllegalArgumentException ex) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (RollbackException ex) {
+            resp.sendError(HttpServletResponse.SC_CONFLICT);
         }
     }
 

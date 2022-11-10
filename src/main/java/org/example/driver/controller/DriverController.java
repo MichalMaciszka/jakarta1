@@ -11,6 +11,7 @@ import org.example.team.entity.Team;
 import org.example.team.service.TeamService;
 
 import javax.inject.Inject;
+import javax.transaction.RollbackException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -84,8 +85,8 @@ public class DriverController {
                             .path("{driver}")
                             .build(teamName, request.getStartingNumber())
             ).build();
-        } catch (IllegalArgumentException ex) {
-            System.out.println(ex.getMessage());
+        } catch (RollbackException ex) {
+            System.err.println(ex.getMessage());
             return Response.status(Response.Status.CONFLICT).build();
         }
     }
@@ -104,10 +105,6 @@ public class DriverController {
             //update
             Driver driver = driverOpt.get();
 
-            //check if new team exists -> if no - skip field
-//            Optional<Team> newTeam = teamService.findTeam(request.getNewTeamName());
-//            newTeam.ifPresent(driver::setTeam);
-
             driver.setName(request.getName());
             driver.setSurname(request.getSurname());
             driver.setRacesWon(Integer.parseInt(request.getRacesWon()));
@@ -122,8 +119,6 @@ public class DriverController {
                 return Response.status(Response.Status.CONFLICT).build();
             }
 
-            //skip field: newTeamName - use one from @PathParam
-
             Team team = teamService.findTeam(teamName).get();
             Driver driver = new Driver(
                     number,
@@ -133,13 +128,17 @@ public class DriverController {
                     Integer.parseInt(request.getRacesWon()),
                     team
             );
-            driverService.createDriver(driver);
-            return Response.created(
-                    UriBuilder.fromMethod(DriverController.class, "getDriver")
-                            .path("drivers")
-                            .path("{number}")
-                            .build(teamName, number)
-            ).build();
+            try {
+                driverService.createDriver(driver);
+                return Response.created(
+                        UriBuilder.fromMethod(DriverController.class, "getDriver")
+                                .path("drivers")
+                                .path("{number}")
+                                .build(teamName, number)
+                ).build();
+            } catch (RollbackException ex) {
+                return Response.status(Response.Status.CONFLICT).build();
+            }
         }
     }
 

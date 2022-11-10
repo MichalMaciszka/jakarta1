@@ -2,6 +2,7 @@ package org.example.driver.view;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.driver.entity.Driver;
 import org.example.driver.model.DriverCreateModel;
 import org.example.driver.service.DriverService;
 import org.example.team.model.TeamModel;
@@ -12,9 +13,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.RollbackException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -50,15 +53,15 @@ public class DriverCreate implements Serializable {
         team.ifPresent(value -> driverCreateModel.setTeamModel(TeamModel.entityToModelMapper().apply(value)));
     }
 
-    public String addAction() throws IOException {
-        var driver = driverService.findDriver(driverCreateModel.getStartingNumber());
+    public String addAction() throws IOException, RollbackException {
+        Optional<Driver> driver = driverService.findDriver(driverCreateModel.getStartingNumber());
         if (driver.isPresent()) {
             FacesContext.getCurrentInstance().getExternalContext()
                     .responseSendError(HttpServletResponse.SC_CONFLICT, "invalid number");
             return "";
         }
 
-        var toCreate = DriverCreateModel
+        Driver toCreate = DriverCreateModel
                 .modelToEntityMapper(model -> teamService.findTeam(model.getName()).orElseThrow())
                 .apply(driverCreateModel);
         driverService.createDriver(toCreate);

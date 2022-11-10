@@ -9,6 +9,7 @@ import org.example.team.entity.Team;
 import org.example.team.service.TeamService;
 
 import javax.inject.Inject;
+import javax.transaction.RollbackException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -61,7 +62,7 @@ public class TeamController {
             return Response.created(
                     UriBuilder.fromMethod(this.getClass(), "getTeam").build(team.getTeamName())
             ).build();
-        } catch (IllegalArgumentException ex) {
+        } catch (RollbackException ex) {
             return Response.status(Response.Status.CONFLICT).build();
         }
     }
@@ -102,10 +103,14 @@ public class TeamController {
                     request.getTeamChief(),
                     request.getIsActive()
             );
-            teamService.createTeam(team);
-            return Response.created(
-                    UriBuilder.fromMethod(getClass(), "getTeam").build(teamName)
-            ).build();
+            try {
+                teamService.createTeam(team);
+                return Response.created(
+                        UriBuilder.fromMethod(getClass(), "getTeam").build(teamName)
+                ).build();
+            } catch (RollbackException ex) {
+                return Response.status(Response.Status.CONFLICT).build();
+            }
         }
     }
 }

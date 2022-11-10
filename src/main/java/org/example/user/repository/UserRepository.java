@@ -1,35 +1,40 @@
 package org.example.user.repository;
 
-import org.example.datastore.DataStore;
+import lombok.NoArgsConstructor;
 import org.example.user.entity.User;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import javax.enterprise.context.RequestScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-@Dependent
+@RequestScoped
+@NoArgsConstructor
 public class UserRepository {
-    private final DataStore store;
+    private EntityManager em;
 
-    @Inject
-    public UserRepository(DataStore store) {
-        this.store = store;
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
     public void createUser(User user) {
-        store.createUser(user);
+        em.persist(user);
     }
 
     public List<User> findAllUsers() {
-        return store.findAllUsers();
+        return em.createQuery("select u from User u", User.class).getResultList();
     }
 
     public Optional<User> findUser(String login) {
-        return store.findUserByLogin(login);
+        return Optional.ofNullable(em.find(User.class, login));
     }
 
     public void updatePortrait(String login, byte[] portrait) {
-        store.updatePortrait(login, portrait);
+        User user = findUser(login).orElseThrow();
+        em.detach(user);
+        user.setPortrait(portrait);
+        em.merge(user);
     }
 }

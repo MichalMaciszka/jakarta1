@@ -7,6 +7,8 @@ import org.example.utils.PortraitUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.RollbackException;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +23,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void create(User user) {
+    @Transactional
+    public void create(User user) throws RollbackException {
         userRepository.createUser(user);
     }
 
@@ -33,11 +36,13 @@ public class UserService {
         return userRepository.findUser(login);
     }
 
+    @Transactional
     public void updatePortrait(String filePath, String login, byte[] portrait) throws IOException {
         PortraitUtils.saveImage(filePath, login, portrait);
         userRepository.updatePortrait(login, portrait);
     }
 
+    @Transactional
     public void deletePortrait(String filePath, String login) throws IOException {
         userRepository.updatePortrait(login, null);
         PortraitUtils.delete(filePath, login);

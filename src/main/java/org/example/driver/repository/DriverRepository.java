@@ -1,58 +1,86 @@
 package org.example.driver.repository;
 
-import org.example.datastore.DataStore;
+import lombok.NoArgsConstructor;
 import org.example.driver.entity.Driver;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import javax.enterprise.context.RequestScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-@Dependent
+@RequestScoped
+@NoArgsConstructor
 public class DriverRepository {
-    private final DataStore dataStore;
+    private EntityManager em;
 
-    @Inject
-    public DriverRepository(DataStore dataStore) {
-        this.dataStore = dataStore;
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
     public void createDriver(Driver driver) {
-        dataStore.createDriver(driver);
+        em.persist(driver);
     }
 
     public void deleteDriver(Driver driver) {
-        dataStore.deleteDriver(driver.getStartingNumber());
+        em.remove(em.find(Driver.class, driver.getStartingNumber()));
     }
 
     public List<Driver> findAllDrivers() {
-        return dataStore.findAllDrivers();
+        return em.createQuery("select d from Driver d", Driver.class).getResultList();
     }
 
     public Optional<Driver> findDriverByNameAndSurname(String name, String surname) {
-        return dataStore.findDriverByNameAndSurname(name, surname);
+        try {
+            String query = "select d from Driver d where d.name = :name and d.surname = :surname";
+            return Optional.of(
+                    em.createQuery(query, Driver.class)
+                            .setParameter("name", name)
+                            .setParameter("surname", surname)
+                            .getSingleResult()
+            );
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     public Optional<Driver> findDriverByStartingNumber(Integer number) {
-        return dataStore.findDriverByNumber(number);
+        try {
+            String query = "select d from Driver d where d.startingNumber = :number";
+            return Optional.of(
+                    em.createQuery(query, Driver.class)
+                            .setParameter("number", number)
+                            .getSingleResult()
+            );
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     public Optional<Driver> findDriverByTeamAndNumber(String teamName, Integer number) {
-        return dataStore.findAllDrivers()
-                .stream()
-                .filter(x -> x.getTeam().getTeamName().equals(teamName) && x.getStartingNumber().equals(number))
-                .findFirst();
+        try {
+            String query = "select d from Driver d where d.startingNumber = :number and d.team.teamName = :teamName";
+            return Optional.of(
+                    em.createQuery(query, Driver.class)
+                            .setParameter("number", number)
+                            .setParameter("teamName", teamName)
+                            .getSingleResult()
+            );
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     public List<Driver> findDriversByTeam(String teamName) {
-        return dataStore.findAllDrivers()
-                .stream()
-                .filter(x -> x.getTeam().getTeamName().equals(teamName))
-                .collect(Collectors.toList());
+        String query = "select d from Driver d where d.team.teamName = :teamName";
+        return em.createQuery(query, Driver.class)
+                .setParameter("teamName", teamName)
+                .getResultList();
     }
 
     public void update(Driver driver) {
-        dataStore.updateDriver(driver);
+        em.merge(driver);
     }
 }

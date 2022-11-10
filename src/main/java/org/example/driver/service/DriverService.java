@@ -6,6 +6,8 @@ import org.example.driver.repository.DriverRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.RollbackException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +21,12 @@ public class DriverService {
         this.driverRepository = driverRepository;
     }
 
-    public void createDriver(Driver driver) {
+    @Transactional
+    public void createDriver(Driver driver) throws RollbackException {
         driverRepository.createDriver(driver);
     }
 
+    @Transactional
     public void deleteDriver(Driver driver) {
         driverRepository.deleteDriver(driver);
     }
@@ -43,6 +47,7 @@ public class DriverService {
         return driverRepository.findDriversByTeam(teamName);
     }
 
+    @Transactional
     public void update(Driver driver) {
         driverRepository.update(driver);
     }
