@@ -29,7 +29,7 @@ public class TeamList implements Serializable {
     }
 
     public String deleteAction(GetTeamResponse team) {
-        teamService.deleteTeam(team.getTeamName());
+        teamService.deleteTeam(teamService.findTeam(team.getTeamName()).orElseThrow());
         return "teams_list?faces-redirect=true";
     }
 }

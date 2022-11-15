@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.example.driver.entity.Driver;
 import org.example.driver.model.DriverCreateModel;
 import org.example.driver.service.DriverService;
+import org.example.team.entity.Team;
 import org.example.team.model.TeamModel;
 import org.example.team.service.TeamService;
 
@@ -49,7 +50,7 @@ public class DriverCreate implements Serializable {
                 .stream()
                 .map(x -> TeamModel.entityToModelMapper().apply(x))
                 .collect(Collectors.toList());
-        var team = teamService.findTeam(defaultTeam);
+        Optional<Team> team = teamService.findTeam(defaultTeam);
         team.ifPresent(value -> driverCreateModel.setTeamModel(TeamModel.entityToModelMapper().apply(value)));
     }
 

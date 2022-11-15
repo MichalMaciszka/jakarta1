@@ -17,11 +17,11 @@
                     javax.sql.ConnectionPoolDataSource="org.h2.jdbcx.JdbcDataSource"
                     javax.sql.DataSource="org.h2.jdbcx.JdbcDataSource"
                     libraryRef="H2JDBCLib"/>
-        <properties URL="jdbc:h2:mem:F1"/>
+        <properties URL="jdbc:h2:mem:F1;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;REFERENTIAL_INTEGRITY=TRUE"/>
     </dataSource>
 
     <library id="H2JDBCLib">
-        <fileset dir="${wlp.install.dir}/usr/servers/defaultServer/lib/global/" includes="h2-1.4.200.jar"/>
+        <fileset dir="${wlp.install.dir}/usr/servers/defaultServer/lib/global/" includes="h2-2.1.214.jar"/>
     </library>
 
     <logging consoleLogLevel="INFO" />

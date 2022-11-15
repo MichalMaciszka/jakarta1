@@ -3,7 +3,9 @@ package org.example.team.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.example.driver.entity.Driver;
 
 import javax.persistence.CascadeType;
@@ -48,6 +50,8 @@ public class Team implements Serializable {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Driver> drivers;
 }

@@ -83,4 +83,8 @@ public class DriverRepository {
     public void update(Driver driver) {
         em.merge(driver);
     }
+
+    public void detach(Driver driver) {
+        em.detach(driver);
+    }
 }

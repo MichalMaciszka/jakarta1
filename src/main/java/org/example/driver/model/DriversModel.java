@@ -25,7 +25,7 @@ public class DriversModel implements Serializable {
 
     public static Function<Collection<Driver>, DriversModel> entityToModelMapper() {
         return x -> {
-            var responses = x.stream()
+            List<GetDriverResponse> responses = x.stream()
                     .map(a -> GetDriverResponse.entityToDtoMapper().apply(a))
                     .collect(Collectors.toList());
             return DriversModel.builder()

@@ -26,7 +26,7 @@ public class TeamsModel implements Serializable {
     public static Function<Collection<Team>, TeamsModel> entityToModelMapper() {
         return t -> {
             TeamsModelBuilder builder = TeamsModel.builder();
-            var responses = t.stream()
+            List<GetTeamResponse> responses = t.stream()
                     .map(x -> GetTeamResponse.entityToDtoMapper().apply(x))
                     .collect(Collectors.toList());
             return builder.teams(responses).build();

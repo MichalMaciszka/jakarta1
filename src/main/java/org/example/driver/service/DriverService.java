@@ -3,6 +3,7 @@ package org.example.driver.service;
 import lombok.NoArgsConstructor;
 import org.example.driver.entity.Driver;
 import org.example.driver.repository.DriverRepository;
+import org.example.team.repository.TeamRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -16,18 +17,24 @@ import java.util.Optional;
 public class DriverService {
     private DriverRepository driverRepository;
 
+    private TeamRepository teamRepository;
+
     @Inject
-    public DriverService(DriverRepository driverRepository) {
+    public DriverService(DriverRepository driverRepository, TeamRepository teamRepository) {
         this.driverRepository = driverRepository;
+        this.teamRepository = teamRepository;
     }
 
     @Transactional
     public void createDriver(Driver driver) throws RollbackException {
         driverRepository.createDriver(driver);
+        teamRepository.findTeam(driver.getTeam().getTeamName()).ifPresent(team -> team.getDrivers().add(driver));
     }
 
     @Transactional
     public void deleteDriver(Driver driver) {
+        Driver original = driverRepository.findDriverByStartingNumber(driver.getStartingNumber()).orElseThrow();
+        original.getTeam().getDrivers().remove(original);
         driverRepository.deleteDriver(driver);
     }
 
@@ -49,6 +56,12 @@ public class DriverService {
 
     @Transactional
     public void update(Driver driver) {
+        Driver original = driverRepository.findDriverByStartingNumber(driver.getStartingNumber()).orElseThrow();
+        driverRepository.detach(original);
+        if(!original.getTeam().getTeamName().equals(driver.getTeam().getTeamName())) {
+            original.getTeam().getDrivers().removeIf(toRemove -> toRemove.getStartingNumber().equals(driver.getStartingNumber()));
+            teamRepository.findTeam(driver.getTeam().getTeamName()).ifPresent(team -> team.getDrivers().add(driver));
+        }
         driverRepository.update(driver);
     }
 }

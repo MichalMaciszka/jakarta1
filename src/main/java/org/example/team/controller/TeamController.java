@@ -70,7 +70,7 @@ public class TeamController {
     @DELETE
     @Path("{teamName}")
     public Response deleteTeam(@PathParam("teamName") String teamName) {
-        teamService.deleteTeam(teamName);
+        teamService.deleteTeam(teamService.findTeam(teamName).orElseThrow());
         return Response.noContent().build();
     }
 

@@ -31,12 +31,12 @@ public class TeamRepository {
         return Optional.ofNullable(em.find(Team.class, name));
     }
 
-    public void deleteTeam(String teamName) {
-        em.remove(em.find(Team.class, teamName));
+    public void deleteTeam(Team team) {
+        em.remove(em.find(Team.class, team.getTeamName()));
     }
 
     public void deleteAll() {
-        em.clear();
+        findAllTeams().forEach(em::remove);
     }
 
     public void updateTeam(Team team) {

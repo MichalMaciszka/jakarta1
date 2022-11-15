@@ -35,8 +35,8 @@ public class TeamService {
     }
 
     @Transactional
-    public void deleteTeam(String name) {
-        teamRepository.deleteTeam(name);
+    public void deleteTeam(Team team) {
+        teamRepository.deleteTeam(team);
     }
 
     @Transactional
