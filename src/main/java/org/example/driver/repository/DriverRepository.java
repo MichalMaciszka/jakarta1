@@ -2,15 +2,17 @@ package org.example.driver.repository;
 
 import lombok.NoArgsConstructor;
 import org.example.driver.entity.Driver;
+import org.example.team.entity.Team;
+import org.example.user.entity.User;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-@RequestScoped
+@Dependent
 @NoArgsConstructor
 public class DriverRepository {
     private EntityManager em;
@@ -86,5 +88,42 @@ public class DriverRepository {
 
     public void detach(Driver driver) {
         em.detach(driver);
+    }
+
+    public Optional<Driver> findDriverByStartingNumberAndUser(Integer startingNumber, User user) {
+        try {
+            String query = "select d from Driver d where d.startingNumber = :number and d.user = :user";
+            return Optional.of(
+                    em.createQuery(query, Driver.class)
+                            .setParameter("number", startingNumber)
+                            .setParameter("user", user)
+                            .getSingleResult()
+            );
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
+    }
+
+    public List<Driver> findAllByTeamAndUser(Team team, User user) {
+        String query = "select d from Driver d where d.team = :team and d.user = :user";
+        return em.createQuery(query, Driver.class)
+                .setParameter("team", team)
+                .setParameter("user", user)
+                .getResultList();
+    }
+
+    public Optional<Driver> findDriverByUserTeamAndNumber(User user, Team team, Integer number) {
+        try {
+            String query = "select d from Driver d where d.startingNumber = :number and d.user = :user and d.team = :team";
+            return Optional.of(
+                    em.createQuery(query, Driver.class)
+                            .setParameter("number", number)
+                            .setParameter("user", user)
+                            .setParameter("team", team)
+                            .getSingleResult()
+            );
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 }

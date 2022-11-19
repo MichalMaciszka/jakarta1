@@ -5,26 +5,36 @@ import org.example.user.entity.User;
 import org.example.user.repository.UserRepository;
 import org.example.utils.PortraitUtils;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.annotation.security.PermitAll;
+import javax.ejb.EJBTransactionRolledbackException;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.transaction.RollbackException;
-import javax.transaction.Transactional;
+import javax.security.enterprise.SecurityContext;
+import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@Stateless
+@LocalBean
 @NoArgsConstructor
 public class UserService {
     private UserRepository userRepository;
 
+    private SecurityContext securityContext;
+
+    private Pbkdf2PasswordHash hash;
+
     @Inject
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, SecurityContext securityContext, Pbkdf2PasswordHash hash) {
         this.userRepository = userRepository;
+        this.securityContext = securityContext;
+        this.hash = hash;
     }
 
-    @Transactional
-    public void create(User user) throws RollbackException {
+    @PermitAll
+    public void create(User user) throws EJBTransactionRolledbackException {
         userRepository.createUser(user);
     }
 
@@ -36,15 +46,21 @@ public class UserService {
         return userRepository.findUser(login);
     }
 
-    @Transactional
     public void updatePortrait(String filePath, String login, byte[] portrait) throws IOException {
         PortraitUtils.saveImage(filePath, login, portrait);
         userRepository.updatePortrait(login, portrait);
     }
 
-    @Transactional
+    public void deleteUser(User user) {
+        userRepository.deleteUser(user);
+    }
+
     public void deletePortrait(String filePath, String login) throws IOException {
         userRepository.updatePortrait(login, null);
         PortraitUtils.delete(filePath, login);
+    }
+
+    public void updateUser(User user) {
+        userRepository.updateUser(user);
     }
 }

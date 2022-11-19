@@ -12,6 +12,7 @@ import org.example.utils.MimeTypes;
 import org.example.utils.ServletUtility;
 import org.example.utils.UrlFactory;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
@@ -19,7 +20,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.RollbackException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -119,7 +119,7 @@ public class DriverServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_CREATED);
         } catch (NotFoundException nfe) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-        } catch (RollbackException ise) {
+        } catch (EJBTransactionRolledbackException ise) {
             resp.sendError(HttpServletResponse.SC_CONFLICT);
         } catch (IllegalArgumentException iae) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);

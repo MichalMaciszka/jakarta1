@@ -9,12 +9,12 @@ import org.example.team.entity.Team;
 import org.example.team.model.TeamModel;
 import org.example.team.service.TeamService;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.RollbackException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -54,7 +54,7 @@ public class DriverCreate implements Serializable {
         team.ifPresent(value -> driverCreateModel.setTeamModel(TeamModel.entityToModelMapper().apply(value)));
     }
 
-    public String addAction() throws IOException, RollbackException {
+    public String addAction() throws IOException, EJBTransactionRolledbackException {
         Optional<Driver> driver = driverService.findDriver(driverCreateModel.getStartingNumber());
         if (driver.isPresent()) {
             FacesContext.getCurrentInstance().getExternalContext()

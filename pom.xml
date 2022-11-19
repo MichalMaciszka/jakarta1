@@ -30,9 +30,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>3.0.3</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

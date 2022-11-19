@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.example.team.entity.Team;
+import org.example.user.entity.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,10 +29,13 @@ public class Driver implements Serializable {
     @Column(name = "starting_number")
     private Integer startingNumber;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "surname")
     private String surname;
 
+    @Column(name = "nationality")
     private String nationality;
 
     @Column(name = "races_won")
@@ -42,4 +46,10 @@ public class Driver implements Serializable {
     @ManyToOne
     @JoinColumn(name = "team")
     private Team team;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private User user;
 }

@@ -3,13 +3,13 @@ package org.example.user.repository;
 import lombok.NoArgsConstructor;
 import org.example.user.entity.User;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-@RequestScoped
+@Dependent
 @NoArgsConstructor
 public class UserRepository {
     private EntityManager em;
@@ -35,6 +35,14 @@ public class UserRepository {
         User user = findUser(login).orElseThrow();
         em.detach(user);
         user.setPortrait(portrait);
+        em.merge(user);
+    }
+
+    public void deleteUser(User user) {
+        em.remove(em.find(User.class, user.getLogin()));
+    }
+
+    public void updateUser(User user) {
         em.merge(user);
     }
 }

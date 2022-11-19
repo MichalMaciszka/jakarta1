@@ -10,6 +10,10 @@
         <feature>el-3.0</feature>
         <feature>jaxrs-2.1</feature>
         <feature>jpa-2.2</feature>
+        <feature>ejb-3.2</feature>
+        <feature>appSecurity-3.0</feature>
+        <feature>passwordUtilities-1.0</feature>
+
     </featureManager>
 
     <dataSource id="F1DataSource" jndiName="jdbc/F1">
@@ -21,10 +25,9 @@
     </dataSource>
 
     <library id="H2JDBCLib">
-        <fileset dir="${wlp.install.dir}/usr/servers/defaultServer/lib/global/" includes="h2-2.1.214.jar"/>
+        <fileset dir="${wlp.install.dir}/usr/servers/defaultServer/lib/global/" includes="h2-1.4.200.jar"/>
     </library>
 
     <logging consoleLogLevel="INFO" />
-
 
 </server>

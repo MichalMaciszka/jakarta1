@@ -6,6 +6,7 @@ import lombok.Data;
 import org.example.user.entity.User;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.function.Function;
 
 @Data
@@ -13,13 +14,13 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class GetUserResponse {
     private String login;
-    private String userRole;
+    private List<String> userRoles;
     private LocalDate birthDate;
 
     public static Function<User, GetUserResponse> entityToDtoMapper() {
         return user -> GetUserResponse
                 .builder()
-                .userRole(user.getRole().toString())
+                .userRoles(user.getRoles())
                 .login(user.getLogin())
                 .birthDate(user.getBirthDate())
                 .build();

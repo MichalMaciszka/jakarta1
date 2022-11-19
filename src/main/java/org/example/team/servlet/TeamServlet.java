@@ -16,6 +16,7 @@ import org.example.utils.MimeTypes;
 import org.example.utils.ServletUtility;
 import org.example.utils.UrlFactory;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
@@ -23,7 +24,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.RollbackException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -154,7 +154,7 @@ public class TeamServlet extends HttpServlet {
                 );
                 resp.setStatus(HttpServletResponse.SC_CREATED);
                 return;
-            } catch (RollbackException ex) {
+            } catch (EJBTransactionRolledbackException ex) {
                 resp.sendError(HttpServletResponse.SC_CONFLICT);
                 return;
             }
@@ -188,7 +188,7 @@ public class TeamServlet extends HttpServlet {
             } catch (NotFoundException nfe) {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
-            } catch (RollbackException ise) {
+            } catch (EJBTransactionRolledbackException ise) {
                 resp.sendError(HttpServletResponse.SC_CONFLICT);
                 return;
             } catch (IllegalArgumentException iae) {

@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.user.entity.User;
-import org.example.user.entity.UserRole;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.function.Function;
 
 @Data
@@ -17,7 +17,7 @@ import java.util.function.Function;
 @NoArgsConstructor
 public class CreateUserRequest {
     private String login;
-    private String userRole;
+    private List<String> userRoles;
     private String password;
     private String birthDate;
 
@@ -26,7 +26,7 @@ public class CreateUserRequest {
                 .builder()
                 .login(request.getLogin())
                 .password(request.getPassword())
-                .role(UserRole.valueOf(request.getUserRole()))
+                .roles(request.getUserRoles())
                 .birthDate(LocalDate.parse(request.getBirthDate(), DateTimeFormatter.ISO_LOCAL_DATE))
                 .build();
     }

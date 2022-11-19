@@ -7,9 +7,11 @@ import org.example.team.dto.GetTeamsResponse;
 import org.example.team.dto.UpdateTeamRequest;
 import org.example.team.entity.Team;
 import org.example.team.service.TeamService;
+import org.example.user.entity.UserRole;
 
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
-import javax.transaction.RollbackException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -35,6 +37,7 @@ public class TeamController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public Response getTeams() {
         return Response
                 .ok(GetTeamsResponse.entityToDtoMapper().apply(teamService.findAllTeams()))
@@ -44,6 +47,7 @@ public class TeamController {
     @GET
     @Path("{teamName}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public Response getTeam(@PathParam("teamName") String teamName) {
         Optional<Team> team = teamService.findTeam(teamName);
         if (team.isPresent()) {
@@ -62,7 +66,7 @@ public class TeamController {
             return Response.created(
                     UriBuilder.fromMethod(this.getClass(), "getTeam").build(team.getTeamName())
             ).build();
-        } catch (RollbackException ex) {
+        } catch (EJBTransactionRolledbackException ex) {
             return Response.status(Response.Status.CONFLICT).build();
         }
     }
@@ -108,7 +112,7 @@ public class TeamController {
                 return Response.created(
                         UriBuilder.fromMethod(getClass(), "getTeam").build(teamName)
                 ).build();
-            } catch (RollbackException ex) {
+            } catch (EJBTransactionRolledbackException ex) {
                 return Response.status(Response.Status.CONFLICT).build();
             }
         }

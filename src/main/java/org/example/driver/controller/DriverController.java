@@ -9,9 +9,11 @@ import org.example.driver.entity.Driver;
 import org.example.driver.service.DriverService;
 import org.example.team.entity.Team;
 import org.example.team.service.TeamService;
+import org.example.user.service.UserService;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
-import javax.transaction.RollbackException;
+import javax.security.enterprise.SecurityContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -32,6 +34,10 @@ public class DriverController {
     private DriverService driverService;
     private TeamService teamService;
 
+    private UserService userService;
+
+    private SecurityContext securityContext;
+
     @Inject
     public void setDriverService(DriverService driverService) {
         this.driverService = driverService;
@@ -40,6 +46,16 @@ public class DriverController {
     @Inject
     public void setTeamService(TeamService teamService) {
         this.teamService = teamService;
+    }
+
+    @Inject
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Inject
+    public void setSecurityContext(SecurityContext securityContext) {
+        this.securityContext = securityContext;
     }
 
     @GET
@@ -75,7 +91,8 @@ public class DriverController {
                 request.getSurname(),
                 request.getNationality(),
                 Integer.parseInt(request.getRacesWon()),
-                teamService.findTeam(teamName).orElseThrow()
+                teamService.findTeam(teamName).orElseThrow(),
+                null
         );
         try {
             driverService.createDriver(driver);
@@ -85,7 +102,7 @@ public class DriverController {
                             .path("{driver}")
                             .build(teamName, request.getStartingNumber())
             ).build();
-        } catch (RollbackException ex) {
+        } catch (EJBTransactionRolledbackException ex) {
             System.err.println(ex.getMessage());
             return Response.status(Response.Status.CONFLICT).build();
         }
@@ -126,7 +143,8 @@ public class DriverController {
                     request.getSurname(),
                     request.getNationality(),
                     Integer.parseInt(request.getRacesWon()),
-                    team
+                    team,
+                    null
             );
             try {
                 driverService.createDriver(driver);
@@ -136,7 +154,7 @@ public class DriverController {
                                 .path("{number}")
                                 .build(teamName, number)
                 ).build();
-            } catch (RollbackException ex) {
+            } catch (EJBTransactionRolledbackException ex) {
                 return Response.status(Response.Status.CONFLICT).build();
             }
         }

@@ -3,15 +3,18 @@ package org.example.team.service;
 import lombok.NoArgsConstructor;
 import org.example.team.entity.Team;
 import org.example.team.repository.TeamRepository;
+import org.example.user.entity.UserRole;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJBTransactionRolledbackException;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.transaction.RollbackException;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@Stateless
+@LocalBean
 @NoArgsConstructor
 public class TeamService {
     private TeamRepository teamRepository;
@@ -21,8 +24,8 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    @Transactional
-    public void createTeam(Team team) throws RollbackException {
+    @RolesAllowed(UserRole.ADMIN)
+    public void createTeam(Team team) throws EJBTransactionRolledbackException {
         teamRepository.createTeam(team);
     }
 
@@ -34,17 +37,15 @@ public class TeamService {
         return teamRepository.findTeam(name);
     }
 
-    @Transactional
+    @RolesAllowed(UserRole.ADMIN)
     public void deleteTeam(Team team) {
         teamRepository.deleteTeam(team);
     }
 
-    @Transactional
     public void deleteAll() {
         teamRepository.deleteAll();
     }
 
-    @Transactional
     public void updateTeam(Team team) {
         teamRepository.updateTeam(team);
     }

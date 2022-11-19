@@ -39,6 +39,7 @@ public class Team implements Serializable {
     @Column(name = "team_name")
     private String teamName;
 
+    @Column(name = "nationality")
     private String nationality;
 
     @Column(name = "Championships_won")

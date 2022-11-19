@@ -3,13 +3,13 @@ package org.example.team.repository;
 import lombok.NoArgsConstructor;
 import org.example.team.entity.Team;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-@RequestScoped
+@Dependent
 @NoArgsConstructor
 public class TeamRepository {
     private EntityManager em;

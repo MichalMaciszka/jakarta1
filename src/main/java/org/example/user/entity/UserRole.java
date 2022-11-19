@@ -2,7 +2,8 @@ package org.example.user.entity;
 
 import java.io.Serializable;
 
-public enum UserRole implements Serializable {
-    ADMIN,
-    USER
+public class UserRole implements Serializable {
+    public static final String ADMIN = "admin";
+
+    public static final String USER = "user";
 }

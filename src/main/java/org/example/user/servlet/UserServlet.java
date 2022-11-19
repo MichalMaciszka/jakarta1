@@ -1,6 +1,6 @@
 package org.example.user.servlet;
 
-import  org.example.user.dto.CreateUserRequest;
+import org.example.user.dto.CreateUserRequest;
 import org.example.user.dto.GetUserResponse;
 import org.example.user.entity.User;
 import org.example.user.service.UserService;
@@ -9,14 +9,16 @@ import org.example.utils.MimeTypes;
 import org.example.utils.ServletUtility;
 import org.example.utils.UrlFactory;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.RollbackException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +29,12 @@ public class UserServlet extends HttpServlet {
     private final Jsonb jsonb = JsonbBuilder.create();
     private final UserService userService;
 
+    private final Pbkdf2PasswordHash hash;
+
     @Inject
-    public UserServlet(UserService userService) {
+    public UserServlet(UserService userService, Pbkdf2PasswordHash hash) {
         this.userService = userService;
+        this.hash = hash;
     }
 
     private void addUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -38,6 +43,7 @@ public class UserServlet extends HttpServlet {
                 CreateUserRequest.class
         );
         User user = CreateUserRequest.dtoToEntityMapper().apply(requestBody);
+        user.setPassword(hash.generate(user.getPassword().toCharArray()));
         try {
             userService.create(user);
             resp.addHeader(HttpHeaders.LOCATION,
@@ -48,7 +54,7 @@ public class UserServlet extends HttpServlet {
                     )
             );
             resp.setStatus(HttpServletResponse.SC_CREATED);
-        } catch (RollbackException ex) {
+        } catch (EJBTransactionRolledbackException ex) {
             resp.sendError(HttpServletResponse.SC_CONFLICT);
         }
     }
@@ -89,5 +95,17 @@ public class UserServlet extends HttpServlet {
             return;
         }
         resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String username = ServletUtility.parseRequestPath(req).split("/")[1];
+        Optional<User> result = userService.findByLogin(username);
+        if(result.isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        userService.deleteUser(result.get());
+        resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 }
